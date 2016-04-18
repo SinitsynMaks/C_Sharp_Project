@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyXamlPad", "MyXamlPad\MyXamlPad.csproj", "{A0E81504-0C93-4B4A-AC38-5CA8D006772C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0E81504-0C93-4B4A-AC38-5CA8D006772C}.Debug|x86.ActiveCfg = Debug|x86
+		{A0E81504-0C93-4B4A-AC38-5CA8D006772C}.Debug|x86.Build.0 = Debug|x86
+		{A0E81504-0C93-4B4A-AC38-5CA8D006772C}.Release|x86.ActiveCfg = Release|x86
+		{A0E81504-0C93-4B4A-AC38-5CA8D006772C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
