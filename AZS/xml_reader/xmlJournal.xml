@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<journal>
+	
+	<record>
+		<operNum> 1 </operNum>
+		<currencyCode> RUB </currencyCode>
+		<amount> 1000 </amount>
+		<discount> 50 </discount>
+		<fuelCode> 92 </fuelCode>
+		<fuelVolume> 28 </fuelVolume>
+	</record>
+
+	<record>
+		<operNum> 2 </operNum>
+		<currencyCode> RUB </currencyCode>
+		<amount> 1500 </amount>
+		<discount> 65 </discount>
+		<fuelCode> 92 </fuelCode>
+		<fuelVolume> 41 </fuelVolume>
+	</record>
+
+	<record>
+		<operNum> 3 </operNum>
+		<currencyCode> RUB </currencyCode>
+		<amount> 800 </amount>
+		<discount> 0 </discount>
+		<fuelCode> D </fuelCode>
+		<fuelVolume> 23 </fuelVolume>
+	</record>
+
+</journal>

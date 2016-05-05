@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AZS_report.ReaderAdapter">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAEAACAABAAAEACAAAAAAAAAAAAAoAAAAAAAAAA=</HashCode>
+      <FileName>ReaderAdapter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AZS_report.XMLReader">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XMLReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AZS_report.DebugWriter">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DebugWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AZS_report.ReportBuilderAdapter">
+    <Position X="5.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAEAAAA=</HashCode>
+      <FileName>ReportBuilderClassesIerarhial\ReportBuilderAdapter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Reader" />
+      <Property Name="Writer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AZS_report.ReportBuilderLinqReadAll">
+    <Position X="4.25" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReportBuilderClassesIerarhial\ReportBuilderLinqReadAll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AZS_report.ReportBuilderReadConsequentally">
+    <Position X="6.75" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReportBuilderClassesIerarhial\ReportBuilderReadConsequentally.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Converter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AZS_report.XMLReportBuilder" Collapsed="true">
+    <Position X="7" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReportBuilderClassesIerarhial\XMLReportBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AZS_report.XMLReportBuilderLinq" Collapsed="true">
+    <Position X="4.25" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReportBuilderClassesIerarhial\XMLReportBuilderLinq.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AZS_report.Converter">
+    <Position X="10.25" Y="2.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="AZS_report.Converter.GroupKey" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Converter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Class Name="AZS_report.Converter.GroupComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Converter.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIACAAAAAAAAAAAAAAACQAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="AZS_report.IReader">
+    <Position X="2.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IReader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="System.Collections.Generic.IEnumerator&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="AZS_report.IWriter">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IWriter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
