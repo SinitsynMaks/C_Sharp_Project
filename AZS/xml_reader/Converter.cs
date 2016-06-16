@@ -8,10 +8,17 @@ namespace AZS_report
 {
 	class Converter
 	{
+
+		public Converter()
+		{
+			SortedList = new SortedList<GroupKey, AZSreportGroup>(new GroupComparer());
+		}
+
 		struct GroupKey
 		{
 			public string FuelCode {get; set;}
 			public string CurrencyCode {get; set;}
+
 			public GroupKey(string fuelCode, string currencyCode)
 			{
 				FuelCode = fuelCode;
@@ -31,16 +38,12 @@ namespace AZS_report
 		}
 
 		private SortedList<GroupKey, AZSreportGroup> SortedList { get; set; }
+
 		public IList<AZSreportGroup> ResultList {
 			get
 			{
 				return SortedList.Values;
 			}
-		}
-
-		public Converter()
-		{
-			SortedList = new SortedList<GroupKey, AZSreportGroup>(new GroupComparer());
 		}
 
 		public void Add(AZSjournalRecords record)

@@ -15,7 +15,7 @@ namespace AZS_report
 			XmlDocument Doc = new XmlDocument();
 			Doc.Load(fileName);
 			XmlNodeList RecordList = Doc.GetElementsByTagName("record");
-			Enumerator = RecordList.GetEnumerator();
+			Enumerator = RecordList.GetEnumerator(); // Что это значит?
 		}
 
 		public override AZSjournalRecords GetCurrent()

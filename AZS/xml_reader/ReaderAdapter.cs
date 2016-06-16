@@ -9,11 +9,19 @@ namespace AZS_report
 {
 	abstract class ReaderAdapter : IReader
 	{
-		protected IEnumerator Enumerator { get; set; }
+		protected IEnumerator Enumerator { get; set; } // Свойство, доступное только потомкам этого класса
 
 		public abstract AZSjournalRecords GetCurrent();
 
-		public AZSjournalRecords Current
+		public AZSjournalRecords Current // Реализация метода интерфейса IEnumerator
+		{
+			get
+			{
+				return GetCurrent(); // Реализован в потомке XMLReader
+			}
+		}
+
+		object IEnumerator.Current // Не понял что это за свойство
 		{
 			get
 			{
@@ -21,30 +29,22 @@ namespace AZS_report
 			}
 		}
 
-		object IEnumerator.Current
-		{
-			get
-			{
-				return GetCurrent();
-			}
-		}
-
-		public void Dispose()
+		public void Dispose() // Реализация метода интерфейса IDosposable
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual bool MoveNext()
+		public virtual bool MoveNext() // Реализация метода интерфейса IEnumerator
 		{
 			return Enumerator.MoveNext();
 		}
 
-		public virtual void Reset()
+		public virtual void Reset() //Реализация метода интерфейса IEnumerator
 		{
 			Enumerator.Reset();
 		}
 
-		public IList<AZSjournalRecords> ReadAll()
+		public IList<AZSjournalRecords> ReadAll() //Реализация метода интерфейса IReader
 		{
 			List<AZSjournalRecords> list = new List<AZSjournalRecords>();
 			Reset();
