@@ -61,7 +61,6 @@
 			this.comboBoxPortName.Size = new System.Drawing.Size(121, 21);
 			this.comboBoxPortName.TabIndex = 1;
 			this.comboBoxPortName.Text = "Выбери порт";
-			this.comboBoxPortName.DropDown += new System.EventHandler(this.comboBoxPortName_DropDown);
 			this.comboBoxPortName.SelectedValueChanged += new System.EventHandler(this.comboBoxPortName_SelectedValueChanged);
 			// 
 			// comboBoxBaudRate
@@ -97,7 +96,6 @@
 			this.Name = "FConfiguringPorts";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Настройка порта";
-			this.Load += new System.EventHandler(this.FConfiguringPorts_Load);
 			this.Shown += new System.EventHandler(this.FConfiguringPorts_Shown);
 			this.ResumeLayout(false);
 			this.PerformLayout();

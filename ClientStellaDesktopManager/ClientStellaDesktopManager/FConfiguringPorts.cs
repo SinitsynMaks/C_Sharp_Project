@@ -19,23 +19,13 @@ namespace ClientStellaDesktopManager
 			InitializeComponent();
 		}
 
-		private void FConfiguringPorts_Load(object sender, EventArgs e)
-		{
-			comboBoxBaudRate.Items.AddRange(ComPort.baudRates);
-			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf(9600);
-		}
-
 		private void FConfiguringPorts_Shown(object sender, EventArgs e)
-		{
-			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(Properties.Settings.Default.PortName);// Отображаем порт из настроект
-			comboBoxBaudRate.Items.AddRange(ComPort.baudRates);
-			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf("9600");
-		}
-
-		private void comboBoxPortName_DropDown(object sender, EventArgs e)
 		{
 			comboBoxPortName.Items.Clear(); // Очистка содержимого бокса для нового заполненияё
 			comboBoxPortName.Items.AddRange(ComPort.AvailablePortNames); // Загружаем список доступных портов в бокс через свойство класса ComPort
+			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(Properties.Settings.Default.PortName);// Отображаем порт из настроект
+			comboBoxBaudRate.Items.AddRange(ComPort.baudRates);
+			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf("9600");
 		}
 
 		private void comboBoxPortName_SelectedValueChanged(object sender, EventArgs e)

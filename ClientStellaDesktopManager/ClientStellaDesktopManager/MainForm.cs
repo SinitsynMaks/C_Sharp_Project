@@ -19,24 +19,31 @@ namespace ClientStellaDesktopManager
 			InitializeComponent();
 		}
 
+		public FConfiguringPorts PortConfig = null;
+
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			progressBarScanningDevice.Visible = false;
 
 			// Создаем объект для работы с ком портом с нужным именем и скоростью
-			Properties.Settings.Default.PortName = "COM2";
+			Properties.Settings.Default.PortName = "COM1";
 			ComPort.Open(Properties.Settings.Default.PortName);
 		}
 
 		private void PortSettings_Click(object sender, EventArgs e)
 		{
-			FConfiguringPorts PortConfig = new FConfiguringPorts();
-			PortConfig.ShowDialog();
+			if (PortConfig == null)
+			{
+				PortConfig = new FConfiguringPorts();
+				PortConfig.ShowDialog();
+			}
+			else
+				PortConfig.ShowDialog();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			//ComPort.Open(Properties.Settings.Default.PortName);
+			ComPort.Open(Properties.Settings.Default.PortName);
 			ComPort.SendTestPaket();
 			//ComPort.Close();
 		}

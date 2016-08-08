@@ -91,13 +91,13 @@ namespace ClientStellaDesktopManager
 		{
 			try
 			{
-				byte[] data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+				byte[] data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 				port.Write(data, 0, data.Length);
 			}
 			catch(InvalidOperationException)
 			{
 				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
-								"Возможно порт закрыт или недоступен.", "Ошибка отправки пакета в порт");
+								"Возможно, порт закрыт или недоступен.", "Ошибка отправки пакета в порт");
 			}
 
 		}

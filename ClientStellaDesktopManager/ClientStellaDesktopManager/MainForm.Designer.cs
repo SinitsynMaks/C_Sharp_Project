@@ -153,6 +153,7 @@
 			// 
 			// PortSettings
 			// 
+			this.PortSettings.Image = global::ClientStellaDesktopManager.Properties.Resources.setting_tools;
 			this.PortSettings.Name = "PortSettings";
 			this.PortSettings.Size = new System.Drawing.Size(169, 22);
 			this.PortSettings.Text = "Настройки порта";
