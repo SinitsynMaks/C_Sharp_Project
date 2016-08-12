@@ -70,9 +70,11 @@
 			this.comboBoxBaudRate.Name = "comboBoxBaudRate";
 			this.comboBoxBaudRate.Size = new System.Drawing.Size(121, 21);
 			this.comboBoxBaudRate.TabIndex = 1;
+			this.comboBoxBaudRate.SelectedValueChanged += new System.EventHandler(this.comboBoxBaudRate_SelectedValueChanged);
 			// 
 			// buttonSaveSettings
 			// 
+			this.buttonSaveSettings.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.buttonSaveSettings.Location = new System.Drawing.Point(12, 81);
 			this.buttonSaveSettings.Name = "buttonSaveSettings";
 			this.buttonSaveSettings.Size = new System.Drawing.Size(198, 23);
@@ -84,6 +86,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.buttonSaveSettings;
 			this.ClientSize = new System.Drawing.Size(222, 116);
 			this.Controls.Add(this.buttonSaveSettings);
 			this.Controls.Add(this.comboBoxBaudRate);

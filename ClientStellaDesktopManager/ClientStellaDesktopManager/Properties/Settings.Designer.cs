@@ -25,13 +25,25 @@ namespace ClientStellaDesktopManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
         public string PortName {
             get {
                 return ((string)(this["PortName"]));
             }
             set {
                 this["PortName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9600")]
+        public string BaudRates {
+            get {
+                return ((string)(this["BaudRates"]));
+            }
+            set {
+                this["BaudRates"] = value;
             }
         }
     }

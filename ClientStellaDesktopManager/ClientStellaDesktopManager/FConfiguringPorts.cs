@@ -14,32 +14,46 @@ namespace ClientStellaDesktopManager
 {
 	public partial class FConfiguringPorts : Form
 	{
-		public FConfiguringPorts()
+		private MainForm LinkToMainForm = null;
+		public string portName;
+		public string baudRates;
+
+		public FConfiguringPorts(MainForm Link)
 		{
 			InitializeComponent();
+			LinkToMainForm = Link;
+			portName = Properties.Settings.Default.PortName;
+			baudRates = Properties.Settings.Default.BaudRates;
 		}
 
 		private void FConfiguringPorts_Shown(object sender, EventArgs e)
 		{
 			comboBoxPortName.Items.Clear(); // Очистка содержимого бокса для нового заполненияё
-			comboBoxPortName.Items.AddRange(ComPort.AvailablePortNames); // Загружаем список доступных портов в бокс через свойство класса ComPort
-			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(Properties.Settings.Default.PortName);// Отображаем порт из настроект
-			comboBoxBaudRate.Items.AddRange(ComPort.baudRates);
-			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf("9600");
+			comboBoxPortName.Items.AddRange(LinkToMainForm.CurrentComPortObject.AvailablePortNames); // Загружаем список доступных портов в бокс через свойство класса ComPort
+			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName);// Отображаем порт из настроект
+			comboBoxBaudRate.Items.Clear();
+			comboBoxBaudRate.Items.AddRange(LinkToMainForm.CurrentComPortObject.baudRates);
+			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf(baudRates);
+			buttonSaveSettings.Enabled = false;
 		}
 
 		private void comboBoxPortName_SelectedValueChanged(object sender, EventArgs e)
 		{
-			Portselection();
+			if (!(portName == comboBoxPortName.SelectedItem.ToString()))
+			{
+				portName = comboBoxPortName.SelectedItem.ToString();
+				buttonSaveSettings.Enabled = true;
+			}
 		}
 
-		private void Portselection()
+		private void comboBoxBaudRate_SelectedValueChanged(object sender, EventArgs e)
 		{
-			if (Properties.Settings.Default.PortName != comboBoxPortName.SelectedItem.ToString())
+			if (!(baudRates == comboBoxBaudRate.SelectedItem.ToString()))
 			{
-				Properties.Settings.Default.PortName = comboBoxPortName.SelectedItem.ToString();
-				Properties.Settings.Default.Save();
+				baudRates = comboBoxBaudRate.SelectedItem.ToString();
+				buttonSaveSettings.Enabled = true;
 			}
+
 		}
 	}
 }

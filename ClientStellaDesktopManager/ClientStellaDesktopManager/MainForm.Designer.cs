@@ -197,6 +197,7 @@
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Управление стеллой";
+			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.panelForDateTime.ResumeLayout(false);
 			this.panelForDateTime.PerformLayout();

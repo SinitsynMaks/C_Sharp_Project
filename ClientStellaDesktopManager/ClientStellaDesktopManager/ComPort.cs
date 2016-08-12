@@ -6,43 +6,55 @@ using System.Collections.Generic;
 
 namespace ClientStellaDesktopManager
 {
-	public static class ComPort
+	public class ComPort
 	{
-		private static SerialPort port; // Закрытое поле класса - ключевое поле-компорт
+		private SerialPort port = null; // Закрытое поле класса - объект компорта
+		public Dictionary<string, SerialPort> MyComPortsDictionary = null; //Закрытое поле класса - словарь доступных портов
+		private List<string> PortNamesList = null;  //Закрытое поле класса - массив всех доступных портов в системе
 
-		private static string[] availablePortsList = null;
-		public static string[] AvailablePortNames
+		public ComPort()
+		{
+			MyComPortsDictionary = new Dictionary<string, SerialPort>();
+			PortNamesList = new List<string>();
+			FillAvailablePortNamesList();
+		}
+
+		private void FillAvailablePortNamesList() // Закрытый метод класса, заполняющий список актуальных ком-портов в системе
+		{
+			string[] allComPortListOnThisComputer = SerialPort.GetPortNames(); // Get an array of com_ports on this comp
+			PortNamesList.Clear();
+			for (int i = 0; i < allComPortListOnThisComputer.Length; i++)
+			{
+				try
+				{
+					port = new SerialPort(allComPortListOnThisComputer[i], 9600);
+					port.Open();
+					port.Close();
+					PortNamesList.Add(allComPortListOnThisComputer[i]); // Если порт доступен(не открыт никем), добавляем его в лист
+					MyComPortsDictionary.Add(allComPortListOnThisComputer[i], port); // Here. Available port is stored in the dictionary
+				}
+				catch (Exception)
+				{
+					continue;
+				}
+			}
+			port = null;
+			PortNamesList.Sort();
+		}
+
+		public string[] AvailablePortNames
 		{
 			get
 			{
-				availablePortsList = SerialPort.GetPortNames();
-				List<string> PortNames = new List<string>();
-				if (port != null)
-					if (port.IsOpen)
-						port.Close();
-				for (int i = 0; i < availablePortsList.Length; i++)
-				{
-					try
-					{
-						port = new SerialPort(availablePortsList[i], 9600);
-						port.Open();
-						port.Close();
-						PortNames.Add(availablePortsList[i]); // Если порт доступен, добавляем его в лист
-					}
-					catch (Exception)
-					{
-						continue;
-					}
-				}
-				PortNames.Sort();
-				return PortNames.ToArray();
+				FillAvailablePortNamesList();
+				return PortNamesList.ToArray();
 			}
 		}
-		public static string[] baudRates = { "110", "300", "600", "1200", "2400", "4800", "9600", "14400",
+		public string[] baudRates = { "110", "300", "600", "1200", "2400", "4800", "9600", "14400",
 											"19200", "38400", "56000", "57600", "115200", "128000", "256000" };
 
-		private static string _portName; // Закрытое поле - имя порта
-		public static string portName // Свойство для чтения закрытого поля _portName
+		private string _portName; // Закрытое поле - имя порта
+		public string portName // Свойство для чтения закрытого поля _portName
 		{
 			get { return _portName; }
 			set { _portName = value; }
@@ -50,36 +62,36 @@ namespace ClientStellaDesktopManager
 
 		private static int _baudRate; // Закрытое поле - скорость передачи данных
 
-		public static bool IsPortOpened // Свойство, говорящее закрыт порт или открыт
+		public bool IsPortOpened(string portName) // Метод, говорящий закрыт порт или открыт
 		{
-			get
-			{
-				if (port == null)
-					return false;
-				else
-					return port.IsOpen;
-			}
+			if (MyComPortsDictionary.ContainsKey(portName)) //Если в словаре есть такой порт
+				return MyComPortsDictionary[portName].IsOpen; // Проверяем его состояние на открытость
+			else
+				return false;
+
 		}
 
-		public static void Open(string portName)
+		public void Open(string portName)
+		{
+			if (MyComPortsDictionary.ContainsKey(portName)) //Если в словаре есть такой порт
+			{
+				port = MyComPortsDictionary[portName];
+				if (!(port.IsOpen))
+				{
+					port.Open();
+				}
+			}
+			else
+				MessageBox.Show("Программе не удалось открыть порт  " + portName, "Ошибка открытия порта");
+			
+		}
+
+		public void Close(string portName)
 		{
 			try
 			{
-				port = new SerialPort(portName, 9600);
-				port.Open();
-			}
-			catch (UnauthorizedAccessException)
-			{
-				MessageBox.Show("Программе не удалось подключиться к порту: " + portName, "Ошибка подключения!");
-				return;
-			}
-		}
-
-		public static void Close()
-		{
-			try
-			{
-				port.Close();
+				MyComPortsDictionary[portName].Close();
+				port = null; 
 			}
 			catch (Exception)
 			{
@@ -87,7 +99,7 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
-		public static void SendTestPaket()
+		public void SendTestPaket()
 		{
 			try
 			{
