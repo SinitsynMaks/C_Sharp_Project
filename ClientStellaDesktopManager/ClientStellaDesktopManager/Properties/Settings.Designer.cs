@@ -38,9 +38,9 @@ namespace ClientStellaDesktopManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9600")]
-        public string BaudRates {
+        public int BaudRates {
             get {
-                return ((string)(this["BaudRates"]));
+                return ((int)(this["BaudRates"]));
             }
             set {
                 this["BaudRates"] = value;

@@ -16,24 +16,24 @@ namespace ClientStellaDesktopManager
 	{
 		private MainForm LinkToMainForm = null;
 		public string portName;
-		public string baudRates;
+		public int baudRate;
 
 		public FConfiguringPorts(MainForm Link)
 		{
 			InitializeComponent();
 			LinkToMainForm = Link;
 			portName = Properties.Settings.Default.PortName;
-			baudRates = Properties.Settings.Default.BaudRates;
+			baudRate = Properties.Settings.Default.BaudRates;
 		}
 
 		private void FConfiguringPorts_Shown(object sender, EventArgs e)
 		{
 			comboBoxPortName.Items.Clear(); // Очистка содержимого бокса для нового заполненияё
 			comboBoxPortName.Items.AddRange(LinkToMainForm.CurrentComPortObject.AvailablePortNames); // Загружаем список доступных портов в бокс через свойство класса ComPort
-			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName);// Отображаем порт из настроект
+			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName); // Отображаем порт из настроект
 			comboBoxBaudRate.Items.Clear();
 			comboBoxBaudRate.Items.AddRange(LinkToMainForm.CurrentComPortObject.baudRates);
-			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf(baudRates);
+			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf(baudRate);
 			buttonSaveSettings.Enabled = false;
 		}
 
@@ -48,9 +48,9 @@ namespace ClientStellaDesktopManager
 
 		private void comboBoxBaudRate_SelectedValueChanged(object sender, EventArgs e)
 		{
-			if (!(baudRates == comboBoxBaudRate.SelectedItem.ToString()))
+			if (!(baudRate == (int)comboBoxBaudRate.SelectedItem))
 			{
-				baudRates = comboBoxBaudRate.SelectedItem.ToString();
+				baudRate = (int)comboBoxBaudRate.SelectedItem;
 				buttonSaveSettings.Enabled = true;
 			}
 

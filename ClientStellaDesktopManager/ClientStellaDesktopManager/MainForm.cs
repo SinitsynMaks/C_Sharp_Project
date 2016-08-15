@@ -15,8 +15,9 @@ namespace ClientStellaDesktopManager
 	public partial class MainForm : Form
 	{
 
-		public string NameOfCurrentComPort; 
-		public FConfiguringPorts PortConfigForm; //Поле главной формы - окно настроек порта
+		public string NameOfCurrentComPort; //Для класса главной формы имя текущего компорта - основополагающее свойство. 
+		public int BaudRate; //Второе основополагающее свойство главной формы - скорость подключения к компорту. 
+		public FConfiguringPorts PortConfigForm; //Поле главной формы - ссылка на окно настроек порта. 
 		public ComPort CurrentComPortObject; //Поле главной формы - объект_оболочка над компортом
 
 		public MainForm()
@@ -25,6 +26,7 @@ namespace ClientStellaDesktopManager
 			PortConfigForm = null;
 			CurrentComPortObject = null;
 			NameOfCurrentComPort = Properties.Settings.Default.PortName; ; //По умолчанию в настройках будем подключаться к этому порту;
+			BaudRate = Properties.Settings.Default.BaudRates;
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -35,13 +37,15 @@ namespace ClientStellaDesktopManager
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			progressBarScanningDevice.Visible = false;
-
-			// Создаем объект для работы с ком портом с нужным именем и скоростью
-			
-			CurrentComPortObject.Open(NameOfCurrentComPort);// Открываем порт-объект
+			CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);// Открываем порт-объект
 		}
 
 		private void PortSettings_Click(object sender, EventArgs e)
+		{
+			CallSettingsForm();
+		}
+
+		public void CallSettingsForm()
 		{
 			if (PortConfigForm == null)
 			{
@@ -57,17 +61,18 @@ namespace ClientStellaDesktopManager
 
 			if (PortConfigForm.DialogResult == DialogResult.OK)
 			{
-				NameOfCurrentComPort = PortConfigForm.portName;
 				Properties.Settings.Default.PortName = PortConfigForm.portName;
-				Properties.Settings.Default.BaudRates = PortConfigForm.baudRates;
-				string baudRate = PortConfigForm.baudRates;
-				CurrentComPortObject.Open(NameOfCurrentComPort);
-				MessageBox.Show("Текущий порт " + NameOfCurrentComPort + "\n" + "Текущая скорость " + baudRate, "Изменение настроек порта");
+				Properties.Settings.Default.BaudRates = PortConfigForm.baudRate;
+				Properties.Settings.Default.Save();
+				NameOfCurrentComPort = PortConfigForm.portName;
+				BaudRate = PortConfigForm.baudRate;
+				CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);
+				MessageBox.Show("Текущий порт " + NameOfCurrentComPort + "\n" + "Текущая скорость " + BaudRate, "Изменение настроек порта");
 			}
 			else
 			{
 				//MessageBox.Show("Ты просто закрыл окно");
-				CurrentComPortObject.Open(NameOfCurrentComPort);
+				CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);
 			}
 		}
 
@@ -76,9 +81,19 @@ namespace ClientStellaDesktopManager
 			CurrentComPortObject.SendTestPaket();
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void SavePriceToFile_Click(object sender, EventArgs e)
 		{
-			CurrentComPortObject.Open(Properties.Settings.Default.PortName);
+
+		}
+
+		private void LoadPriceFromFile_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void ChangePasswordPultDU_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

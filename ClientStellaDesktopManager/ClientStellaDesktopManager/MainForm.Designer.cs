@@ -38,10 +38,12 @@
 			this.buttonRead = new System.Windows.Forms.Button();
 			this.buttonWrite = new System.Windows.Forms.Button();
 			this.Mainmenu = new System.Windows.Forms.MenuStrip();
-			this.Menufile = new System.Windows.Forms.ToolStripMenuItem();
+			this.File = new System.Windows.Forms.ToolStripMenuItem();
 			this.PortSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.SavePriceToFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
+			this.LoadPriceFromFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.ChangePasswordPultDU = new System.Windows.Forms.ToolStripMenuItem();
 			this.panelForDateTime.SuspendLayout();
 			this.Mainmenu.SuspendLayout();
 			this.SuspendLayout();
@@ -136,32 +138,42 @@
 			// Mainmenu
 			// 
 			this.Mainmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Menufile});
+            this.File});
 			this.Mainmenu.Location = new System.Drawing.Point(0, 0);
 			this.Mainmenu.Name = "Mainmenu";
 			this.Mainmenu.Size = new System.Drawing.Size(334, 24);
 			this.Mainmenu.TabIndex = 5;
 			this.Mainmenu.Text = "menuStrip1";
 			// 
-			// Menufile
+			// File
 			// 
-			this.Menufile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PortSettings});
-			this.Menufile.Name = "Menufile";
-			this.Menufile.Size = new System.Drawing.Size(48, 20);
-			this.Menufile.Text = "Файл";
+			this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PortSettings,
+            this.SavePriceToFile,
+            this.LoadPriceFromFile,
+            this.ChangePasswordPultDU});
+			this.File.Name = "File";
+			this.File.Size = new System.Drawing.Size(48, 20);
+			this.File.Text = "Файл";
 			// 
 			// PortSettings
 			// 
 			this.PortSettings.Image = global::ClientStellaDesktopManager.Properties.Resources.setting_tools;
 			this.PortSettings.Name = "PortSettings";
-			this.PortSettings.Size = new System.Drawing.Size(169, 22);
+			this.PortSettings.Size = new System.Drawing.Size(229, 22);
 			this.PortSettings.Text = "Настройки порта";
 			this.PortSettings.Click += new System.EventHandler(this.PortSettings_Click);
 			// 
+			// SavePriceToFile
+			// 
+			this.SavePriceToFile.Name = "SavePriceToFile";
+			this.SavePriceToFile.Size = new System.Drawing.Size(229, 22);
+			this.SavePriceToFile.Text = "Сохранить цены в файл";
+			this.SavePriceToFile.Click += new System.EventHandler(this.SavePriceToFile_Click);
+			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(149, 32);
+			this.button1.Location = new System.Drawing.Point(230, 32);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(92, 23);
 			this.button1.TabIndex = 6;
@@ -169,22 +181,25 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
-			// button2
+			// LoadPriceFromFile
 			// 
-			this.button2.Location = new System.Drawing.Point(247, 32);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 0;
-			this.button2.Text = "Connect";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.LoadPriceFromFile.Name = "LoadPriceFromFile";
+			this.LoadPriceFromFile.Size = new System.Drawing.Size(229, 22);
+			this.LoadPriceFromFile.Text = "Загрузить цены из файла";
+			this.LoadPriceFromFile.Click += new System.EventHandler(this.LoadPriceFromFile_Click);
+			// 
+			// ChangePasswordPultDU
+			// 
+			this.ChangePasswordPultDU.Name = "ChangePasswordPultDU";
+			this.ChangePasswordPultDU.Size = new System.Drawing.Size(229, 22);
+			this.ChangePasswordPultDU.Text = "Изменить пароль пульта ДУ";
+			this.ChangePasswordPultDU.Click += new System.EventHandler(this.ChangePasswordPultDU_Click);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(334, 632);
-			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.buttonWrite);
 			this.Controls.Add(this.buttonRead);
@@ -220,10 +235,12 @@
 		private System.Windows.Forms.Button buttonRead;
 		private System.Windows.Forms.Button buttonWrite;
 		private System.Windows.Forms.MenuStrip Mainmenu;
-		private System.Windows.Forms.ToolStripMenuItem Menufile;
+		private System.Windows.Forms.ToolStripMenuItem File;
 		private System.Windows.Forms.ToolStripMenuItem PortSettings;
 		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.ToolStripMenuItem SavePriceToFile;
+		private System.Windows.Forms.ToolStripMenuItem LoadPriceFromFile;
+		private System.Windows.Forms.ToolStripMenuItem ChangePasswordPultDU;
 	}
 }
 

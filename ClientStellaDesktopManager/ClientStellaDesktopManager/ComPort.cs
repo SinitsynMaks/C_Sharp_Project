@@ -27,7 +27,7 @@ namespace ClientStellaDesktopManager
 			{
 				try
 				{
-					port = new SerialPort(allComPortListOnThisComputer[i], 9600);
+					port = new SerialPort(allComPortListOnThisComputer[i], Properties.Settings.Default.BaudRates); //Открываем порт с указанным именем и скоростью 9600 по умолчанию
 					port.Open();
 					port.Close();
 					PortNamesList.Add(allComPortListOnThisComputer[i]); // Если порт доступен(не открыт никем), добавляем его в лист
@@ -50,8 +50,7 @@ namespace ClientStellaDesktopManager
 				return PortNamesList.ToArray();
 			}
 		}
-		public string[] baudRates = { "110", "300", "600", "1200", "2400", "4800", "9600", "14400",
-											"19200", "38400", "56000", "57600", "115200", "128000", "256000" };
+		public object[] baudRates = { 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 256000 };
 
 		private string _portName; // Закрытое поле - имя порта
 		public string portName // Свойство для чтения закрытого поля _portName
@@ -68,10 +67,9 @@ namespace ClientStellaDesktopManager
 				return MyComPortsDictionary[portName].IsOpen; // Проверяем его состояние на открытость
 			else
 				return false;
-
 		}
 
-		public void Open(string portName)
+		public void Open(string portName, int baudrate)
 		{
 			if (MyComPortsDictionary.ContainsKey(portName)) //Если в словаре есть такой порт
 			{
@@ -79,23 +77,21 @@ namespace ClientStellaDesktopManager
 				if (!(port.IsOpen))
 				{
 					port.Open();
+					port.BaudRate = baudrate;
 				}
 			}
 			else
-				MessageBox.Show("Программе не удалось открыть порт  " + portName, "Ошибка открытия порта");
-			
+			{
+				MessageBox.Show("Программе не удалось подключиться к порту  " + portName + "\n" + "Возможно порт занят другим приложением или недоступен", "Ошибка открытия порта");
+			}	
 		}
 
 		public void Close(string portName)
 		{
-			try
+			if (!(port == null))
 			{
 				MyComPortsDictionary[portName].Close();
-				port = null; 
-			}
-			catch (Exception)
-			{
-				MessageBox.Show("Программе не удалось закрыть порт " + portName, "Ошибка закрытия порта");
+				port = null;
 			}
 		}
 
