@@ -63,6 +63,16 @@ namespace ClientStellaDesktopManager.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap remote {
+            get {
+                object obj = ResourceManager.GetObject("remote", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap setting_tools {
             get {
                 object obj = ResourceManager.GetObject("setting_tools", resourceCulture);

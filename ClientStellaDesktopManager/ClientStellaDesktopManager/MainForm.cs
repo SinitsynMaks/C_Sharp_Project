@@ -17,27 +17,31 @@ namespace ClientStellaDesktopManager
 
 		public string NameOfCurrentComPort; //Для класса главной формы имя текущего компорта - основополагающее свойство. 
 		public int BaudRate; //Второе основополагающее свойство главной формы - скорость подключения к компорту. 
-		public FConfiguringPorts PortConfigForm; //Поле главной формы - ссылка на окно настроек порта. 
+		public FConfiguringPorts PortConfigForm; //Поле главной формы - ссылка на окно настроек порта.
+		public FChangePasswordDU ChangePasswordDUForm; 
 		public ComPort CurrentComPortObject; //Поле главной формы - объект_оболочка над компортом
 
 		public MainForm()
 		{
 			InitializeComponent();
 			PortConfigForm = null;
+			ChangePasswordDUForm = null;
 			CurrentComPortObject = null;
-			NameOfCurrentComPort = Properties.Settings.Default.PortName; ; //По умолчанию в настройках будем подключаться к этому порту;
+			NameOfCurrentComPort = Properties.Settings.Default.PortName; ; //По умолчанию при запуске будем подключаться к этому порту;
 			BaudRate = Properties.Settings.Default.BaudRates;
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			CurrentComPortObject = new ComPort(); //В конструкторе уже известно об имеющихся портах в системе
+			CurrentComPortObject = new ComPort(); //В конструкторе класса ComPort уже известно об имеющихся портах в системе
+			this.FormBorderStyle = FormBorderStyle.FixedSingle;
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			progressBarScanningDevice.Visible = false;
-			CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);// Открываем порт-объект
+			CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);// Открываем порт с ранее сохраненными настройками
+
 		}
 
 		private void PortSettings_Click(object sender, EventArgs e)
@@ -78,7 +82,7 @@ namespace ClientStellaDesktopManager
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			CurrentComPortObject.SendTestPaket();
+			labelPasswordDU.Text += CurrentComPortObject.GetPasswordPultDU();
 		}
 
 		private void SavePriceToFile_Click(object sender, EventArgs e)
@@ -93,7 +97,15 @@ namespace ClientStellaDesktopManager
 
 		private void ChangePasswordPultDU_Click(object sender, EventArgs e)
 		{
-
+			if (ChangePasswordDUForm == null)
+			{
+				ChangePasswordDUForm = new FChangePasswordDU(this);
+				ChangePasswordDUForm.ShowDialog();
+			}
+			else
+			{
+				ChangePasswordDUForm.ShowDialog();
+			}
 		}
 	}
 }

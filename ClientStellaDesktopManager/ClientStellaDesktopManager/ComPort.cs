@@ -11,6 +11,7 @@ namespace ClientStellaDesktopManager
 		private SerialPort port = null; // Закрытое поле класса - объект компорта
 		public Dictionary<string, SerialPort> MyComPortsDictionary = null; //Закрытое поле класса - словарь доступных портов
 		private List<string> PortNamesList = null;  //Закрытое поле класса - массив всех доступных портов в системе
+		public object[] baudRates = { 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 256000 };
 
 		public ComPort()
 		{
@@ -27,7 +28,7 @@ namespace ClientStellaDesktopManager
 			{
 				try
 				{
-					port = new SerialPort(allComPortListOnThisComputer[i], Properties.Settings.Default.BaudRates); //Открываем порт с указанным именем и скоростью 9600 по умолчанию
+					port = new SerialPort(allComPortListOnThisComputer[i], 9600); //Открываем порт с указанным именем и скоростью 9600 по умолчанию
 					port.Open();
 					port.Close();
 					PortNamesList.Add(allComPortListOnThisComputer[i]); // Если порт доступен(не открыт никем), добавляем его в лист
@@ -50,16 +51,6 @@ namespace ClientStellaDesktopManager
 				return PortNamesList.ToArray();
 			}
 		}
-		public object[] baudRates = { 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 256000 };
-
-		private string _portName; // Закрытое поле - имя порта
-		public string portName // Свойство для чтения закрытого поля _portName
-		{
-			get { return _portName; }
-			set { _portName = value; }
-		}
-
-		private static int _baudRate; // Закрытое поле - скорость передачи данных
 
 		public bool IsPortOpened(string portName) // Метод, говорящий закрыт порт или открыт
 		{
@@ -88,10 +79,10 @@ namespace ClientStellaDesktopManager
 
 		public void Close(string portName)
 		{
-			if (!(port == null))
+			if (!(port == null)) //Если порт уже не закрыт.
 			{
-				MyComPortsDictionary[portName].Close();
-				port = null;
+				MyComPortsDictionary[portName].Close(); //То закрываем его
+				port = null; // Значение переменной null означает что порт закрыт.
 			}
 		}
 
@@ -107,7 +98,37 @@ namespace ClientStellaDesktopManager
 				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
 								"Возможно, порт закрыт или недоступен.", "Ошибка отправки пакета в порт");
 			}
+		}
 
+		public string GetPasswordPultDU()
+		{
+			byte[] datain = new byte[15];
+			System.Text.StringBuilder s =new System.Text.StringBuilder();
+			try
+			{
+				byte[] data = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 16, 0xFF, 0x0D, 0x0A };
+				port.Write(data, 0, data.Length);
+			}
+			catch (InvalidOperationException)
+			{
+				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
+								"Возможно, порт закрыт или недоступен.", "Ошибка отправки пакета в порт");
+			}
+
+			port.Read(datain,0,15);
+
+			for (int i = 0; i < 4; i++)
+			{
+				s.Append(Convert.ToString(datain[i+1]));
+			}
+
+			return s.ToString();
+		}
+
+		public bool SetPasswordPultDU(byte[] dataTochange)
+		{
+
+			return false;
 		}
 	}
 }
