@@ -43,6 +43,8 @@
 			this.SavePriceToFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.LoadPriceFromFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.ChangePasswordPultDU = new System.Windows.Forms.ToolStripMenuItem();
+			this.Information = new System.Windows.Forms.ToolStripMenuItem();
+			this.AboutProgramm = new System.Windows.Forms.ToolStripMenuItem();
 			this.button1 = new System.Windows.Forms.Button();
 			this.panelForDateTime.SuspendLayout();
 			this.Mainmenu.SuspendLayout();
@@ -138,7 +140,8 @@
 			// Mainmenu
 			// 
 			this.Mainmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.File});
+            this.File,
+            this.Information});
 			this.Mainmenu.Location = new System.Drawing.Point(0, 0);
 			this.Mainmenu.Name = "Mainmenu";
 			this.Mainmenu.Size = new System.Drawing.Size(334, 24);
@@ -166,6 +169,7 @@
 			// 
 			// SavePriceToFile
 			// 
+			this.SavePriceToFile.Image = global::ClientStellaDesktopManager.Properties.Resources.file_save_as;
 			this.SavePriceToFile.Name = "SavePriceToFile";
 			this.SavePriceToFile.Size = new System.Drawing.Size(229, 22);
 			this.SavePriceToFile.Text = "Сохранить цены в файл";
@@ -173,6 +177,7 @@
 			// 
 			// LoadPriceFromFile
 			// 
+			this.LoadPriceFromFile.Image = global::ClientStellaDesktopManager.Properties.Resources.from_text;
 			this.LoadPriceFromFile.Name = "LoadPriceFromFile";
 			this.LoadPriceFromFile.Size = new System.Drawing.Size(229, 22);
 			this.LoadPriceFromFile.Text = "Загрузить цены из файла";
@@ -180,10 +185,27 @@
 			// 
 			// ChangePasswordPultDU
 			// 
+			this.ChangePasswordPultDU.Image = global::ClientStellaDesktopManager.Properties.Resources.remote;
 			this.ChangePasswordPultDU.Name = "ChangePasswordPultDU";
 			this.ChangePasswordPultDU.Size = new System.Drawing.Size(229, 22);
 			this.ChangePasswordPultDU.Text = "Изменить пароль пульта ДУ";
 			this.ChangePasswordPultDU.Click += new System.EventHandler(this.ChangePasswordPultDU_Click);
+			// 
+			// Information
+			// 
+			this.Information.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AboutProgramm});
+			this.Information.Name = "Information";
+			this.Information.Size = new System.Drawing.Size(65, 20);
+			this.Information.Text = "Справка";
+			// 
+			// AboutProgramm
+			// 
+			this.AboutProgramm.Image = global::ClientStellaDesktopManager.Properties.Resources.help;
+			this.AboutProgramm.Name = "AboutProgramm";
+			this.AboutProgramm.Size = new System.Drawing.Size(152, 22);
+			this.AboutProgramm.Text = "О программе";
+			this.AboutProgramm.Click += new System.EventHandler(this.AboutProgramm_Click);
 			// 
 			// button1
 			// 
@@ -243,6 +265,8 @@
 		private System.Windows.Forms.ToolStripMenuItem SavePriceToFile;
 		private System.Windows.Forms.ToolStripMenuItem LoadPriceFromFile;
 		private System.Windows.Forms.ToolStripMenuItem ChangePasswordPultDU;
+		private System.Windows.Forms.ToolStripMenuItem Information;
+		private System.Windows.Forms.ToolStripMenuItem AboutProgramm;
 	}
 }
 

@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComPort.cs" />
+    <Compile Include="FAboutProgramm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FAboutProgramm.Designer.cs">
+      <DependentUpon>FAboutProgramm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FChangePasswordDU.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FAboutProgramm.resx">
+      <DependentUpon>FAboutProgramm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FChangePasswordDU.resx">
       <DependentUpon>FChangePasswordDU.cs</DependentUpon>
     </EmbeddedResource>
@@ -101,7 +110,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\setting_tools.png" />
-    <None Include="Resources\remote1.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\from_text.png" />
+    <None Include="Resources\save_data.png" />
+    <None Include="Resources\file_save_as.png" />
     <None Include="Resources\remote.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

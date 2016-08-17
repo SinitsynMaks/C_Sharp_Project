@@ -13,11 +13,14 @@ namespace ClientStellaDesktopManager
 	public partial class FChangePasswordDU : Form
 	{
 		private MainForm linkToMainForm;
+		private List<int> ValidKey;
 
 		public FChangePasswordDU(MainForm link)
 		{
 			InitializeComponent();
 			linkToMainForm = link;
+			int[] keypressed = { 8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 127 };
+			ValidKey = new List<int>(keypressed);
 		}
 
 		private void FChangePasswordDU_Shown(object sender, EventArgs e)
@@ -36,21 +39,35 @@ namespace ClientStellaDesktopManager
 				return;
 			}
 
-			byte[] PasswordPultDUPaket = { 1, Convert.ToByte(EditPasswordBox.Text[1]), Convert.ToByte(EditPasswordBox.Text[2]),
-											Convert.ToByte(EditPasswordBox.Text[3]), Convert.ToByte(EditPasswordBox.Text[4]),
-											11, 11, 0, 0, 1, 0, 6, 255, 0x0D, 0x0A};
+			byte digit1 = Convert.ToByte(EditPasswordBox.Text[0].ToString());
+			byte digit2 = Convert.ToByte(EditPasswordBox.Text[1].ToString());
+			byte digit3 = Convert.ToByte(EditPasswordBox.Text[2].ToString());
+			byte digit4 = Convert.ToByte(EditPasswordBox.Text[3].ToString());
+
+			byte[] PasswordPultDUPaket = { 1, digit1, digit2, digit3, digit4, 11, 11, 0, 0, 1, 0, 6, 255, 0x0D, 0x0A};
 
 			if (linkToMainForm.CurrentComPortObject.SetPasswordPultDU(PasswordPultDUPaket))
 			{
-				MessageBox.Show("Пароль успешно изменен");
 				Close();
 			}
 			else
 			{
-				MessageBox.Show("Пароль изменить не удалось");
 				return;
 			}
+		}
 
+		private void EditPasswordBox_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char)Keys.Return)
+			{
+				buttonSavePassword_Click(this, e);
+			}
+			int simbol = Convert.ToInt32(e.KeyChar);
+			if (!(ValidKey.Contains(simbol)))
+			{
+				e.KeyChar = (char)Keys.Clear;
+			}
+			//MessageBox.Show("ASCII код нажатой клавиши: "+ Convert.ToInt32(e.KeyChar).ToString());
 		}
 	}
 }

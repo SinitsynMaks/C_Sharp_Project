@@ -82,6 +82,7 @@ namespace ClientStellaDesktopManager
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			//MessageBox.Show(CurrentComPortObject.GetReadTimeOut("COM1").ToString());
 			labelPasswordDU.Text += CurrentComPortObject.GetPasswordPultDU();
 		}
 
@@ -106,6 +107,11 @@ namespace ClientStellaDesktopManager
 			{
 				ChangePasswordDUForm.ShowDialog();
 			}
+		}
+
+		private void AboutProgramm_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

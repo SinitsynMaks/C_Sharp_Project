@@ -37,13 +37,14 @@
 			// 
 			this.EditPasswordBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.EditPasswordBox.Location = new System.Drawing.Point(12, 25);
+			this.EditPasswordBox.MaxLength = 4;
 			this.EditPasswordBox.Name = "EditPasswordBox";
 			this.EditPasswordBox.Size = new System.Drawing.Size(215, 29);
 			this.EditPasswordBox.TabIndex = 0;
+			this.EditPasswordBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditPasswordBox_KeyPress);
 			// 
 			// buttonSavePassword
 			// 
-			this.buttonSavePassword.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.buttonSavePassword.Location = new System.Drawing.Point(12, 69);
 			this.buttonSavePassword.Name = "buttonSavePassword";
 			this.buttonSavePassword.Size = new System.Drawing.Size(215, 35);

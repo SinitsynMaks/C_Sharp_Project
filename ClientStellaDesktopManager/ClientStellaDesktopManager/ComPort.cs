@@ -20,6 +20,11 @@ namespace ClientStellaDesktopManager
 			FillAvailablePortNamesList();
 		}
 
+		public int GetReadTimeOut(string portname)
+		{
+			return MyComPortsDictionary[portname].ReadTimeout;
+		}
+
 		private void FillAvailablePortNamesList() // Закрытый метод класса, заполняющий список актуальных ком-портов в системе
 		{
 			string[] allComPortListOnThisComputer = SerialPort.GetPortNames(); // Get an array of com_ports on this comp
@@ -69,6 +74,7 @@ namespace ClientStellaDesktopManager
 				{
 					port.Open();
 					port.BaudRate = baudrate;
+					port.ReadTimeout = 100;
 				}
 			}
 			else
@@ -102,33 +108,80 @@ namespace ClientStellaDesktopManager
 
 		public string GetPasswordPultDU()
 		{
+			byte[] data = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 16, 0xFF, 0x0D, 0x0A };
 			byte[] datain = new byte[15];
 			System.Text.StringBuilder s =new System.Text.StringBuilder();
 			try
 			{
-				byte[] data = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 16, 0xFF, 0x0D, 0x0A };
 				port.Write(data, 0, data.Length);
 			}
 			catch (InvalidOperationException)
 			{
 				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
-								"Возможно, порт закрыт или недоступен.", "Ошибка отправки пакета в порт");
+								"Возможно, порт закрыт или недоступен.", "Ошибка опроса устройства");
 			}
 
-			port.Read(datain,0,15);
-
-			for (int i = 0; i < 4; i++)
+			try
 			{
-				s.Append(Convert.ToString(datain[i+1]));
+				port.Read(datain, 0, 15);
+			}
+			catch (TimeoutException)
+			{
+				MessageBox.Show("Определить пароль не удалось.\nПричина: время ожидания ответа от устройства превысило пороговое значение", "Ошибка изменения пароля");
+				return "- - - -";
 			}
 
-			return s.ToString();
+			if ((datain[0]==0) & (datain[10]==data[11]) & (datain[11]==255))
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					s.Append(Convert.ToString(datain[i + 1]));
+				}
+				return s.ToString();
+			}
+			else
+			{
+				return "- - - -";
+			}
 		}
 
 		public bool SetPasswordPultDU(byte[] dataTochange)
 		{
+			try
+			{
+				port.Write(dataTochange, 0, dataTochange.Length);
+			}
+			catch (InvalidOperationException)
+			{
+				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
+								"Возможно, порт закрыт или недоступен.", "Ошибка опроса устройства");
+			}
 
-			return false;
+			byte[] datain = new byte[15];
+			try
+			{
+				port.Read(datain, 0, 15);
+			}
+			catch (TimeoutException)
+			{
+				MessageBox.Show("Пароль изменить не удалось.\nПричина: время ожидания ответа от устройства превысило пороговое значение","Ошибка изменения пароля");
+				return false;
+			}
+			catch (InvalidOperationException)
+			{
+				MessageBox.Show("Пароль изменить не удалось.\nПричина:порт, которому предназначались данные, закрыт", "Ошибка доступа к порту");
+				return false;
+			}
+			if ((datain[0]==0) & (datain[10]==6) & (datain[11]==255))
+			{
+				MessageBox.Show("Пароль успешно изменен");
+				return true;
+			}
+			else
+			{
+				MessageBox.Show("Пароль изменить не удалось.\nПричина: поступили неверные данные от устройства", "Ошибка изменения пароля");
+				return false;
+			}
 		}
 	}
 }
