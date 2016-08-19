@@ -65,6 +65,18 @@
     <Compile Include="FConfiguringPorts.Designer.cs">
       <DependentUpon>FConfiguringPorts.cs</DependentUpon>
     </Compile>
+    <Compile Include="FGlobalSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FGlobalSetting.Designer.cs">
+      <DependentUpon>FGlobalSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FPassToGlobalSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FPassToGlobalSettings.Designer.cs">
+      <DependentUpon>FPassToGlobalSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +93,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FConfiguringPorts.resx">
       <DependentUpon>FConfiguringPorts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FGlobalSetting.resx">
+      <DependentUpon>FGlobalSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FPassToGlobalSettings.resx">
+      <DependentUpon>FPassToGlobalSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

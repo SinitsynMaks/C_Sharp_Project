@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.labelPasswordDU = new System.Windows.Forms.Label();
 			this.panelForDateTime = new System.Windows.Forms.Panel();
 			this.labelDateTimeInfo = new System.Windows.Forms.Label();
@@ -46,6 +47,7 @@
 			this.Information = new System.Windows.Forms.ToolStripMenuItem();
 			this.AboutProgramm = new System.Windows.Forms.ToolStripMenuItem();
 			this.button1 = new System.Windows.Forms.Button();
+			this.openPriceDialog = new System.Windows.Forms.OpenFileDialog();
 			this.panelForDateTime.SuspendLayout();
 			this.Mainmenu.SuspendLayout();
 			this.SuspendLayout();
@@ -161,7 +163,7 @@
 			// 
 			// PortSettings
 			// 
-			this.PortSettings.Image = global::ClientStellaDesktopManager.Properties.Resources.setting_tools;
+			this.PortSettings.Image = ((System.Drawing.Image)(resources.GetObject("PortSettings.Image")));
 			this.PortSettings.Name = "PortSettings";
 			this.PortSettings.Size = new System.Drawing.Size(229, 22);
 			this.PortSettings.Text = "Настройки порта";
@@ -169,7 +171,7 @@
 			// 
 			// SavePriceToFile
 			// 
-			this.SavePriceToFile.Image = global::ClientStellaDesktopManager.Properties.Resources.file_save_as;
+			this.SavePriceToFile.Image = ((System.Drawing.Image)(resources.GetObject("SavePriceToFile.Image")));
 			this.SavePriceToFile.Name = "SavePriceToFile";
 			this.SavePriceToFile.Size = new System.Drawing.Size(229, 22);
 			this.SavePriceToFile.Text = "Сохранить цены в файл";
@@ -177,7 +179,7 @@
 			// 
 			// LoadPriceFromFile
 			// 
-			this.LoadPriceFromFile.Image = global::ClientStellaDesktopManager.Properties.Resources.from_text;
+			this.LoadPriceFromFile.Image = ((System.Drawing.Image)(resources.GetObject("LoadPriceFromFile.Image")));
 			this.LoadPriceFromFile.Name = "LoadPriceFromFile";
 			this.LoadPriceFromFile.Size = new System.Drawing.Size(229, 22);
 			this.LoadPriceFromFile.Text = "Загрузить цены из файла";
@@ -185,7 +187,7 @@
 			// 
 			// ChangePasswordPultDU
 			// 
-			this.ChangePasswordPultDU.Image = global::ClientStellaDesktopManager.Properties.Resources.remote;
+			this.ChangePasswordPultDU.Image = ((System.Drawing.Image)(resources.GetObject("ChangePasswordPultDU.Image")));
 			this.ChangePasswordPultDU.Name = "ChangePasswordPultDU";
 			this.ChangePasswordPultDU.Size = new System.Drawing.Size(229, 22);
 			this.ChangePasswordPultDU.Text = "Изменить пароль пульта ДУ";
@@ -201,9 +203,9 @@
 			// 
 			// AboutProgramm
 			// 
-			this.AboutProgramm.Image = global::ClientStellaDesktopManager.Properties.Resources.help;
+			this.AboutProgramm.Image = ((System.Drawing.Image)(resources.GetObject("AboutProgramm.Image")));
 			this.AboutProgramm.Name = "AboutProgramm";
-			this.AboutProgramm.Size = new System.Drawing.Size(152, 22);
+			this.AboutProgramm.Size = new System.Drawing.Size(149, 22);
 			this.AboutProgramm.Text = "О программе";
 			this.AboutProgramm.Click += new System.EventHandler(this.AboutProgramm_Click);
 			// 
@@ -267,6 +269,7 @@
 		private System.Windows.Forms.ToolStripMenuItem ChangePasswordPultDU;
 		private System.Windows.Forms.ToolStripMenuItem Information;
 		private System.Windows.Forms.ToolStripMenuItem AboutProgramm;
+		private System.Windows.Forms.OpenFileDialog openPriceDialog;
 	}
 }
 

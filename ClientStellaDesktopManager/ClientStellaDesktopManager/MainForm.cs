@@ -16,9 +16,13 @@ namespace ClientStellaDesktopManager
 	{
 
 		public string NameOfCurrentComPort; //Для класса главной формы имя текущего компорта - основополагающее свойство. 
-		public int BaudRate; //Второе основополагающее свойство главной формы - скорость подключения к компорту. 
+		public int BaudRate; //Второе основополагающее свойство главной формы - скорость подключения к компорту.
+
+		public FAboutProgramm AboutProgrammForm; //Ссылка на окно "О программе"
 		public FConfiguringPorts PortConfigForm; //Поле главной формы - ссылка на окно настроек порта.
-		public FChangePasswordDU ChangePasswordDUForm; 
+		public FChangePasswordDU ChangePasswordDUForm; // Ссылка на окно изменения пароля пульта ДУ
+		public FPassToGlobalSettings PassToGlobalSettingsForm;
+		public FGlobalSetting GlobalSettingForm;
 		public ComPort CurrentComPortObject; //Поле главной формы - объект_оболочка над компортом
 
 		public MainForm()
@@ -27,7 +31,10 @@ namespace ClientStellaDesktopManager
 			PortConfigForm = null;
 			ChangePasswordDUForm = null;
 			CurrentComPortObject = null;
-			NameOfCurrentComPort = Properties.Settings.Default.PortName; ; //По умолчанию при запуске будем подключаться к этому порту;
+			AboutProgrammForm = null;
+			PassToGlobalSettingsForm = null;
+			GlobalSettingForm = null;
+			NameOfCurrentComPort = Properties.Settings.Default.PortName; //По умолчанию при запуске будем подключаться к этому порту;
 			BaudRate = Properties.Settings.Default.BaudRates;
 		}
 
@@ -93,7 +100,7 @@ namespace ClientStellaDesktopManager
 
 		private void LoadPriceFromFile_Click(object sender, EventArgs e)
 		{
-
+			openPriceDialog.ShowDialog();
 		}
 
 		private void ChangePasswordPultDU_Click(object sender, EventArgs e)
@@ -111,7 +118,42 @@ namespace ClientStellaDesktopManager
 
 		private void AboutProgramm_Click(object sender, EventArgs e)
 		{
+			if (AboutProgrammForm == null)
+			{
+				AboutProgrammForm = new FAboutProgramm(this);
+				//AboutProgrammForm.Owner = this;
+				AboutProgrammForm.ShowDialog();
+			}
+			else
+			{
+				AboutProgrammForm.ShowDialog();
+			}
 
+			if (AboutProgrammForm.DialogResult == DialogResult.OK)
+			{
+				if (PassToGlobalSettingsForm == null)
+				{
+					PassToGlobalSettingsForm = new FPassToGlobalSettings(this);
+					PassToGlobalSettingsForm.ShowDialog();
+				}
+				else
+				{
+					PassToGlobalSettingsForm.ShowDialog();
+				}
+			}
+
+			if (PassToGlobalSettingsForm.DialogResult == DialogResult.OK)
+			{
+				if (GlobalSettingForm == null)
+				{
+					GlobalSettingForm = new FGlobalSetting(this);
+					GlobalSettingForm.ShowDialog();
+				}
+				else
+				{
+					GlobalSettingForm.ShowDialog();
+				}
+			}
 		}
 	}
 }
