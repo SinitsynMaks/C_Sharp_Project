@@ -100,7 +100,11 @@ namespace ClientStellaDesktopManager
 
 		private void LoadPriceFromFile_Click(object sender, EventArgs e)
 		{
-			openPriceDialog.ShowDialog();
+			openPriceDialog.InitialDirectory = Application.StartupPath;
+			if (openPriceDialog.ShowDialog() == DialogResult.OK)
+			{
+				MessageBox.Show("Yeah!");
+			}
 		}
 
 		private void ChangePasswordPultDU_Click(object sender, EventArgs e)

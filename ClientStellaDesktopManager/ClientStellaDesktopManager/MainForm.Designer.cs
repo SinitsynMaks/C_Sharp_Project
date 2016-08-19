@@ -219,6 +219,10 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// openPriceDialog
+			// 
+			this.openPriceDialog.Filter = "File cen (*.cen)|*.cen|All files (*.*)|*.*";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
