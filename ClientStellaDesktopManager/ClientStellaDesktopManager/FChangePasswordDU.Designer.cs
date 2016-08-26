@@ -41,6 +41,8 @@
 			this.EditPasswordBox.Name = "EditPasswordBox";
 			this.EditPasswordBox.Size = new System.Drawing.Size(215, 29);
 			this.EditPasswordBox.TabIndex = 0;
+			this.EditPasswordBox.TextChanged += new System.EventHandler(this.EditPasswordBox_TextChanged);
+			this.EditPasswordBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EditPasswordBox_KeyDown);
 			this.EditPasswordBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditPasswordBox_KeyPress);
 			// 
 			// buttonSavePassword

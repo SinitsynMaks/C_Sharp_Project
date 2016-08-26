@@ -69,5 +69,15 @@ namespace ClientStellaDesktopManager
 			}
 			//MessageBox.Show("ASCII код нажатой клавиши: "+ Convert.ToInt32(e.KeyChar).ToString());
 		}
+
+		private void EditPasswordBox_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void EditPasswordBox_KeyDown(object sender, KeyEventArgs e)
+		{
+
+		}
 	}
 }

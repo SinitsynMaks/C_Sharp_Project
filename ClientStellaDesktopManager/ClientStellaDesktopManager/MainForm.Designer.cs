@@ -115,7 +115,6 @@
 			// 
 			this.panelForPriceDisplay.AutoScroll = true;
 			this.panelForPriceDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panelForPriceDisplay.Enabled = false;
 			this.panelForPriceDisplay.Location = new System.Drawing.Point(12, 210);
 			this.panelForPriceDisplay.Name = "panelForPriceDisplay";
 			this.panelForPriceDisplay.Size = new System.Drawing.Size(310, 360);

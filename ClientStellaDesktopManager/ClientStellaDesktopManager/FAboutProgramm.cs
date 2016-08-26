@@ -20,7 +20,6 @@ namespace ClientStellaDesktopManager
 		{
 			InitializeComponent();
 			linkToMainForm = link;
-			//Owner = link;
 		}
 
 		private void FAboutProgramm_Shown(object sender, EventArgs e)
@@ -34,5 +33,14 @@ namespace ClientStellaDesktopManager
 		{
 			DialogResult = DialogResult.OK;
 		}
+
+		//private void FAboutProgramm_FormClosing(object sender, FormClosingEventArgs e)
+		//{
+		//	if (e.CloseReason == CloseReason.UserClosing)
+		//	{
+		//		e.Cancel = true;
+		//		Hide();
+		//	}
+		//}
 	}
 }

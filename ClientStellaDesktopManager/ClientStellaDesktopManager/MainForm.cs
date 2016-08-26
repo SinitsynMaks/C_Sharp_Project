@@ -25,6 +25,8 @@ namespace ClientStellaDesktopManager
 		public FGlobalSetting GlobalSettingForm;
 		public ComPort CurrentComPortObject; //Поле главной формы - объект_оболочка над компортом
 
+		private bool introducedPunctuation; //Флажок показывающий - введена ли запятая или точка в поле с ценой
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -36,6 +38,10 @@ namespace ClientStellaDesktopManager
 			GlobalSettingForm = null;
 			NameOfCurrentComPort = Properties.Settings.Default.PortName; //По умолчанию при запуске будем подключаться к этому порту;
 			BaudRate = Properties.Settings.Default.BaudRates;
+			introducedPunctuation = false;
+			//Keys[] keypressed = { 8, 13, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 127 };
+			//ValidKeyMainForm = new List<Keys>(keypressed);
+			
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -103,7 +109,33 @@ namespace ClientStellaDesktopManager
 			openPriceDialog.InitialDirectory = Application.StartupPath;
 			if (openPriceDialog.ShowDialog() == DialogResult.OK)
 			{
-				MessageBox.Show("Yeah!");
+				string[] CurrentInfoDevice; //Массив по каждой строчке
+				string[] lines = System.IO.File.ReadAllLines(openPriceDialog.FileName);
+				int i = 0;
+				foreach (string line in lines)
+				{
+					CurrentInfoDevice = line.Split('=');
+					Label NameOfFuel = new Label();
+					TextBox PriceOfFuel = new TextBox();
+					panelForPriceDisplay.Controls.Add(NameOfFuel);
+					panelForPriceDisplay.Controls.Add(PriceOfFuel);
+					NameOfFuel.Text = CurrentInfoDevice[0];
+					NameOfFuel.Enabled = true;
+					NameOfFuel.Width = 30;
+					NameOfFuel.Font = new Font(new FontFamily("Arial"),14);
+					PriceOfFuel.Text = CurrentInfoDevice[1];
+					PriceOfFuel.Enabled = true;
+					PriceOfFuel.Width = 70;
+					PriceOfFuel.MaxLength = 5;
+					PriceOfFuel.Font = new Font(new FontFamily("Arial"), 14);
+					NameOfFuel.Location = new Point(20, i*PriceOfFuel.Height + 40);
+					PriceOfFuel.Location = new Point(70, i*PriceOfFuel.Height + 40);
+					PriceOfFuel.KeyPress += new KeyPressEventHandler(EditPrice_KeyPress);
+					PriceOfFuel.Enter += PriceOfFuel_Enter;
+					//PriceOfFuel.KeyDown += PriceOfFuel_KeyDown;
+					PriceOfFuel.TextChanged += new EventHandler(EditPrice_TextChanged);
+					i++;
+				}
 			}
 		}
 
@@ -125,7 +157,6 @@ namespace ClientStellaDesktopManager
 			if (AboutProgrammForm == null)
 			{
 				AboutProgrammForm = new FAboutProgramm(this);
-				//AboutProgrammForm.Owner = this;
 				AboutProgrammForm.ShowDialog();
 			}
 			else
@@ -145,6 +176,10 @@ namespace ClientStellaDesktopManager
 					PassToGlobalSettingsForm.ShowDialog();
 				}
 			}
+			else
+			{
+				return;
+			}
 
 			if (PassToGlobalSettingsForm.DialogResult == DialogResult.OK)
 			{
@@ -157,6 +192,58 @@ namespace ClientStellaDesktopManager
 				{
 					GlobalSettingForm.ShowDialog();
 				}
+			}
+			else
+			{
+				return;
+			}
+		}
+
+		private void EditPrice_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!(e.KeyChar == (char)Keys.Enter || e.KeyChar == ',' || e.KeyChar == '.' ||
+				(e.KeyChar >= '0' && e.KeyChar <= '9') ||
+				e.KeyChar == (char)Keys.Back || e.KeyChar == (char)Keys.Delete))
+			{
+				e.KeyChar = (char)Keys.Clear;
+			}
+			if (((e.KeyChar == '.') || (e.KeyChar == ',')) && introducedPunctuation)//Если мы хотим ввести запятую или точку, но она уже введена
+			{
+				e.KeyChar = (char)Keys.Clear;// То мы не вводим ее второй раз
+			}
+			else if (((e.KeyChar == '.') || (e.KeyChar == ',')) && (sender as TextBox).Text.Length == 4)// Если же мы вводим запятую или точку и ее еще нет в тексте
+			{
+				(sender as TextBox).MaxLength = 5;// То можем вводить ее, расширяя текст до 5 символов
+			}
+			else
+			{
+				(sender as TextBox).MaxLength = 4;// Если же это не точка или запятая, 
+			}
+		}
+
+		private void EditPrice_TextChanged(object sender, EventArgs e)
+		{
+			if ((sender as TextBox).Text.Contains('.') || (sender as TextBox).Text.Contains(','))
+			{
+				(sender as TextBox).MaxLength = 5;
+				introducedPunctuation = true;
+			}
+			else
+			{
+				(sender as TextBox).MaxLength = 4;
+				introducedPunctuation = false;
+			}
+		}
+
+		private void PriceOfFuel_Enter(object sender, EventArgs e)
+		{
+			if ((sender as TextBox).Text.Contains('.') || (sender as TextBox).Text.Contains(','))
+			{
+				introducedPunctuation = true;
+			}
+			else
+			{
+				introducedPunctuation = false;
 			}
 		}
 	}
