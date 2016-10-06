@@ -12,12 +12,15 @@ namespace ClientStellaDesktopManager
 		public Dictionary<string, SerialPort> MyComPortsDictionary = null; //Закрытое поле класса - словарь доступных портов
 		private List<string> PortNamesList = null;  //Закрытое поле класса - массив всех доступных портов в системе
 		public object[] baudRates = { 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 256000 };
+		public SortedList<int, string> realDeviceList;
+		private ProgressBar progressInfo;
 
 		public ComPort()
 		{
 			MyComPortsDictionary = new Dictionary<string, SerialPort>();
 			PortNamesList = new List<string>();
 			FillAvailablePortNamesList();
+			realDeviceList = new SortedList<int, string>();
 		}
 
 		public int GetReadTimeOut(string portname)
@@ -25,7 +28,8 @@ namespace ClientStellaDesktopManager
 			return MyComPortsDictionary[portname].ReadTimeout;
 		}
 
-		private void FillAvailablePortNamesList() // Закрытый метод класса, заполняющий список актуальных ком-портов в системе
+		// Закрытый метод класса, заполняющий список актуальными ком-портами в системе
+		private void FillAvailablePortNamesList()
 		{
 			string[] allComPortListOnThisComputer = SerialPort.GetPortNames(); // Get an array of com_ports on this comp
 			PortNamesList.Clear();
@@ -48,7 +52,7 @@ namespace ClientStellaDesktopManager
 			PortNamesList.Sort();
 		}
 
-		public string[] AvailablePortNames
+		public string[] GetAvailablePortNamesList
 		{
 			get
 			{
@@ -74,38 +78,29 @@ namespace ClientStellaDesktopManager
 				{
 					port.Open();
 					port.BaudRate = baudrate;
-					port.ReadTimeout = 100;
+
+					//Операция чтения ждет 100 мс, после чего выдается исключение
+					port.ReadTimeout = 100; 
 				}
 			}
 			else
 			{
-				MessageBox.Show("Программе не удалось подключиться к порту  " + portName + "\n" + "Возможно порт занят другим приложением или недоступен", "Ошибка открытия порта");
+				MessageBox.Show("Программе не удалось подключиться к порту  " + portName + "\n" +
+								"Возможно порт занят другим приложением или недоступен",
+								"Ошибка открытия порта");
 			}	
 		}
 
 		public void Close(string portName)
 		{
-			if (!(port == null)) //Если порт уже не закрыт.
+			if (!(port == null)) //Если порт еще не закрыт.
 			{
 				MyComPortsDictionary[portName].Close(); //То закрываем его
 				port = null; // Значение переменной null означает что порт закрыт.
 			}
 		}
 
-		public void SendTestPaket()
-		{
-			try
-			{
-				byte[] data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-				port.Write(data, 0, data.Length);
-			}
-			catch(InvalidOperationException)
-			{
-				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
-								"Возможно, порт закрыт или недоступен.", "Ошибка отправки пакета в порт");
-			}
-		}
-
+		//Запрос пароля у управляющего устройства
 		public string GetPasswordPultDU()
 		{
 			byte[] data = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 16, 0xFF, 0x0D, 0x0A };
@@ -121,13 +116,16 @@ namespace ClientStellaDesktopManager
 								"Возможно, порт закрыт или недоступен.", "Ошибка опроса устройства");
 			}
 
+			System.Threading.Thread.Sleep(50);
+
 			try
 			{
 				port.Read(datain, 0, 15);
 			}
 			catch (TimeoutException)
 			{
-				MessageBox.Show("Определить пароль не удалось.\nПричина: время ожидания ответа от устройства превысило пороговое значение", "Ошибка изменения пароля");
+				MessageBox.Show("Определить пароль не удалось.\nПричина: время ожидания ответа от устройства превысило максимальное значение",
+								"Ошибка изменения пароля");
 				return "- - - -";
 			}
 
@@ -145,6 +143,7 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
+		//Установка нового пароля пульта ДУ на управляющем устройстве
 		public bool SetPasswordPultDU(byte[] dataTochange)
 		{
 			try
@@ -157,6 +156,8 @@ namespace ClientStellaDesktopManager
 								"Возможно, порт закрыт или недоступен.", "Ошибка опроса устройства");
 			}
 
+			System.Threading.Thread.Sleep(50);
+
 			byte[] datain = new byte[15];
 			try
 			{
@@ -164,7 +165,8 @@ namespace ClientStellaDesktopManager
 			}
 			catch (TimeoutException)
 			{
-				MessageBox.Show("Пароль изменить не удалось.\nПричина: время ожидания ответа от устройства превысило пороговое значение","Ошибка изменения пароля");
+				MessageBox.Show("Пароль изменить не удалось.\nПричина: время ожидания ответа от устройства превысило максимальное значение",
+								"Ошибка изменения пароля");
 				return false;
 			}
 			catch (InvalidOperationException)
@@ -181,6 +183,113 @@ namespace ClientStellaDesktopManager
 			{
 				MessageBox.Show("Пароль изменить не удалось.\nПричина: поступили неверные данные от устройства", "Ошибка изменения пароля");
 				return false;
+			}
+		}
+
+		//Опрос всех имеющихся в сети устройств и запись их в сортированный список realDeviceList
+		public void GetRealDeviceList(ProgressBar bar)
+		{
+			realDeviceList.Clear();
+			progressInfo = bar;
+
+			byte[] datain = new byte[15];
+			byte[] pollingDevicesPackage = new byte[15] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 15, 0xFF, 0x0D, 0x0A };
+
+			for (byte i = 0; i <= 19; i++)
+			{
+				progressInfo.Value = i+1;
+				Application.DoEvents();
+
+				pollingDevicesPackage[0] = (byte)(i+1);
+
+				try
+				{
+					port.Write(pollingDevicesPackage, 0, 15);
+				}
+				catch (InvalidOperationException)
+				{
+					MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
+								"Возможно, порт закрыт или недоступен.", "Ошибка опроса устройства");
+					return;
+				}
+
+				System.Threading.Thread.Sleep(50);
+
+				try
+				{
+					port.Read(datain, 0, 15);
+				}
+				catch (Exception)
+				{
+					continue;
+				}
+
+				if ((datain[8] == i+1) & (datain[9] == 2) & (datain[10] == 15) & (datain[11] == 255))
+				{
+					realDeviceList.Add(i+1, "панель с ценой");
+				}
+				if ((datain[8] == i+1) & (datain[9] == 3) & (datain[10] == 15) & (datain[11] == 255))
+				{
+					realDeviceList.Add(i+1, "часы");
+				}
+
+				Array.Clear(datain, 0, 15);
+			}
+		}
+
+		//Запрос цены у конеретного устройства по его адресу
+		public string GetPriceFromCurrentDevice(byte adress)
+		{
+			byte[] datain = new byte[15];
+
+			//Пакет запроса цены
+			byte[] callingPricesValuePackage = new byte[15] { adress, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0x0B, 0xFF, 0x0D, 0x0A };
+
+			try
+			{
+				port.Write(callingPricesValuePackage, 0, 15);
+			}
+			catch (InvalidOperationException)
+			{
+				MessageBox.Show("Не удалось отправить пакет в порт " + port.PortName + "\n" +
+							"Возможно, порт закрыт или недоступен.", "Ошибка опроса устройства");
+				return "-";
+			}
+
+			System.Threading.Thread.Sleep(50);
+
+			try
+			{
+				port.Read(datain, 0, 15);
+			}
+			catch (Exception)
+			{
+				return "-";
+			}
+
+			if ((datain[8] == adress) & (datain[10] == 11) & (datain[11] == 255))
+			{
+				string price = "";
+				for (byte i = 1; i < 5; i++)
+				{
+					if (datain[i] == 11)
+					{
+						continue;
+					}
+					else
+					{
+						price += datain[i].ToString();
+					}
+				}
+				if (datain[7] > 0)
+				{
+					price = price.Insert(price.Length - datain[7], ",");
+				}
+				return price;
+			}
+			else
+			{
+				return "-";
 			}
 		}
 	}

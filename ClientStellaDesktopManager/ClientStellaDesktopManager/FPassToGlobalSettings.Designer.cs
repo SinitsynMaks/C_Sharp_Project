@@ -39,6 +39,7 @@
 			this.textBoxEnterPAssword.Name = "textBoxEnterPAssword";
 			this.textBoxEnterPAssword.Size = new System.Drawing.Size(181, 20);
 			this.textBoxEnterPAssword.TabIndex = 0;
+			this.textBoxEnterPAssword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxEnterPAssword_KeyPress);
 			// 
 			// buttonEnterPassword
 			// 

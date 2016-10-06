@@ -46,7 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonDataStore.cs" />
     <Compile Include="ComPort.cs" />
+    <Compile Include="FClockSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FClockSettings.Designer.cs">
+      <DependentUpon>FClockSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FConfigureDevicePrice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FConfigureDevicePrice.Designer.cs">
+      <DependentUpon>FConfigureDevicePrice.cs</DependentUpon>
+    </Compile>
     <Compile Include="FAboutProgramm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +98,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FClockSettings.resx">
+      <DependentUpon>FClockSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FConfigureDevicePrice.resx">
+      <DependentUpon>FConfigureDevicePrice.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FAboutProgramm.resx">
       <DependentUpon>FAboutProgramm.cs</DependentUpon>
     </EmbeddedResource>

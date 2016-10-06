@@ -12,15 +12,19 @@ namespace ClientStellaDesktopManager
 {
 	public partial class FChangePasswordDU : Form
 	{
-		private MainForm linkToMainForm;
 		private List<int> ValidKey;
+		private char[] keypressed = { (char)Keys.Enter, (char)Keys.Back, (char)Keys.Delete,
+									  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+		public byte[] PasswordPultDUPaket;
 
-		public FChangePasswordDU(MainForm link)
+		public string PasswordString
+		{
+			get { return EditPasswordBox.Text;}
+		}
+
+		public FChangePasswordDU()
 		{
 			InitializeComponent();
-			linkToMainForm = link;
-			int[] keypressed = { 8, 13, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 127 };
-			ValidKey = new List<int>(keypressed);
 		}
 
 		private void FChangePasswordDU_Shown(object sender, EventArgs e)
@@ -38,46 +42,29 @@ namespace ClientStellaDesktopManager
 				DialogResult = DialogResult.None;
 				return;
 			}
-
-			byte digit1 = Convert.ToByte(EditPasswordBox.Text[0].ToString());
-			byte digit2 = Convert.ToByte(EditPasswordBox.Text[1].ToString());
-			byte digit3 = Convert.ToByte(EditPasswordBox.Text[2].ToString());
-			byte digit4 = Convert.ToByte(EditPasswordBox.Text[3].ToString());
-
-			byte[] PasswordPultDUPaket = { 1, digit1, digit2, digit3, digit4, 11, 11, 0, 0, 1, 0, 6, 255, 0x0D, 0x0A};
-
-			if (linkToMainForm.CurrentComPortObject.SetPasswordPultDU(PasswordPultDUPaket))
-			{
-				Close();
-			}
 			else
 			{
-				return;
+				byte digit1 = Convert.ToByte(EditPasswordBox.Text[0].ToString());
+				byte digit2 = Convert.ToByte(EditPasswordBox.Text[1].ToString());
+				byte digit3 = Convert.ToByte(EditPasswordBox.Text[2].ToString());
+				byte digit4 = Convert.ToByte(EditPasswordBox.Text[3].ToString());
+				PasswordPultDUPaket = new byte[] { 1, digit1, digit2, digit3, digit4, 11, 11, 0, 0, 1, 0, 6, 255, 0x0D, 0x0A };
 			}
 		}
 
 		private void EditPasswordBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			if (e.KeyChar == (char)Keys.Return)
+			if (e.KeyChar == (char)Keys.Enter)
 			{
 				buttonSavePassword_Click(this, e);
+				DialogResult = DialogResult.OK;
 			}
-			int simbol = Convert.ToInt32(e.KeyChar);
-			if (!(ValidKey.Contains(simbol)))
+
+			if (Array.IndexOf(keypressed, e.KeyChar) == -1)
 			{
 				e.KeyChar = (char)Keys.Clear;
 			}
 			//MessageBox.Show("ASCII код нажатой клавиши: "+ Convert.ToInt32(e.KeyChar).ToString());
-		}
-
-		private void EditPasswordBox_TextChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void EditPasswordBox_KeyDown(object sender, KeyEventArgs e)
-		{
-
 		}
 	}
 }

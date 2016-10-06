@@ -40,5 +40,13 @@ namespace ClientStellaDesktopManager
 				textBoxEnterPAssword.Focus();
 			}
 		}
+
+		private void textBoxEnterPAssword_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char)Keys.Enter)
+			{
+				DialogResult = DialogResult.OK;
+			}
+		}
 	}
 }

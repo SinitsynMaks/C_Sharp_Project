@@ -108,7 +108,6 @@
 			this.progressBarScanningDevice.Step = 1;
 			this.progressBarScanningDevice.TabIndex = 2;
 			this.progressBarScanningDevice.Tag = "";
-			this.progressBarScanningDevice.Value = 100;
 			this.progressBarScanningDevice.Visible = false;
 			// 
 			// panelForPriceDisplay
@@ -117,7 +116,7 @@
 			this.panelForPriceDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.panelForPriceDisplay.Location = new System.Drawing.Point(12, 210);
 			this.panelForPriceDisplay.Name = "panelForPriceDisplay";
-			this.panelForPriceDisplay.Size = new System.Drawing.Size(310, 360);
+			this.panelForPriceDisplay.Size = new System.Drawing.Size(310, 371);
 			this.panelForPriceDisplay.TabIndex = 3;
 			// 
 			// buttonRead
@@ -128,6 +127,7 @@
 			this.buttonRead.TabIndex = 4;
 			this.buttonRead.Text = "Считать";
 			this.buttonRead.UseVisualStyleBackColor = true;
+			this.buttonRead.Click += new System.EventHandler(this.buttonRead_Click);
 			// 
 			// buttonWrite
 			// 
@@ -204,7 +204,7 @@
 			// 
 			this.AboutProgramm.Image = ((System.Drawing.Image)(resources.GetObject("AboutProgramm.Image")));
 			this.AboutProgramm.Name = "AboutProgramm";
-			this.AboutProgramm.Size = new System.Drawing.Size(149, 22);
+			this.AboutProgramm.Size = new System.Drawing.Size(152, 22);
 			this.AboutProgramm.Text = "О программе";
 			this.AboutProgramm.Click += new System.EventHandler(this.AboutProgramm_Click);
 			// 

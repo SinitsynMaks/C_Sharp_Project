@@ -14,25 +14,26 @@ namespace ClientStellaDesktopManager
 {
 	public partial class FConfiguringPorts : Form
 	{
-		private MainForm LinkToMainForm = null;
+		private ComPort LinkToComPort = null;
 		public string portName;
 		public int baudRate;
 
-		public FConfiguringPorts(MainForm Link)
+		public FConfiguringPorts(ComPort Link)
 		{
 			InitializeComponent();
-			LinkToMainForm = Link;
-			portName = Properties.Settings.Default.PortName;
-			baudRate = Properties.Settings.Default.BaudRates;
+			LinkToComPort = Link;
 		}
 
 		private void FConfiguringPorts_Shown(object sender, EventArgs e)
 		{
+			portName = Properties.Settings.Default.PortName;
+			baudRate = Properties.Settings.Default.BaudRates;
+
 			comboBoxPortName.Items.Clear(); // Очистка содержимого бокса для нового заполненияё
-			comboBoxPortName.Items.AddRange(LinkToMainForm.CurrentComPortObject.AvailablePortNames); // Загружаем список доступных портов в бокс через свойство класса ComPort
+			comboBoxPortName.Items.AddRange(LinkToComPort.GetAvailablePortNamesList); // Загружаем список доступных портов в бокс через свойство класса ComPort
 			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName); // Отображаем порт из настроект
 			comboBoxBaudRate.Items.Clear();
-			comboBoxBaudRate.Items.AddRange(LinkToMainForm.CurrentComPortObject.baudRates);
+			comboBoxBaudRate.Items.AddRange(LinkToComPort.baudRates);
 			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf(baudRate);
 			buttonSaveSettings.Enabled = false;
 		}
@@ -53,7 +54,6 @@ namespace ClientStellaDesktopManager
 				baudRate = (int)comboBoxBaudRate.SelectedItem;
 				buttonSaveSettings.Enabled = true;
 			}
-
 		}
 	}
 }

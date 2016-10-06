@@ -25,6 +25,18 @@ namespace ClientStellaDesktopManager
 		public FGlobalSetting GlobalSettingForm;
 		public ComPort CurrentComPortObject; //Поле главной формы - объект_оболочка над компортом
 
+		public ProgressBar progressInfoMainForm
+		{
+			get
+			{
+				return progressBarScanningDevice;
+			}
+			set
+			{
+				progressBarScanningDevice = value;
+			}
+		}
+
 		private bool introducedPunctuation; //Флажок показывающий - введена ли запятая или точка в поле с ценой
 
 		public MainForm()
@@ -47,7 +59,8 @@ namespace ClientStellaDesktopManager
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			CurrentComPortObject = new ComPort(); //В конструкторе класса ComPort уже известно об имеющихся портах в системе
-			this.FormBorderStyle = FormBorderStyle.FixedSingle;
+			FormBorderStyle = FormBorderStyle.FixedSingle;
+			CommonDataStore.digitCapacity = Properties.Settings.Default.DigitCapacity;
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e)
@@ -57,7 +70,7 @@ namespace ClientStellaDesktopManager
 
 		}
 
-		private void PortSettings_Click(object sender, EventArgs e)
+		private void PortSettings_Click(object sender, EventArgs e)// Обработка нажатия пункта меню "настройки порта"
 		{
 			CallSettingsForm();
 		}
@@ -66,7 +79,7 @@ namespace ClientStellaDesktopManager
 		{
 			if (PortConfigForm == null)
 			{
-				PortConfigForm = new FConfiguringPorts(this);
+				PortConfigForm = new FConfiguringPorts(CurrentComPortObject);
 				CurrentComPortObject.Close(NameOfCurrentComPort);
 				PortConfigForm.ShowDialog();
 			}
@@ -76,6 +89,7 @@ namespace ClientStellaDesktopManager
 				PortConfigForm.ShowDialog();
 			}
 
+			//Если пользователь нажал ОК на форме "Настройки порта"
 			if (PortConfigForm.DialogResult == DialogResult.OK)
 			{
 				Properties.Settings.Default.PortName = PortConfigForm.portName;
@@ -95,8 +109,70 @@ namespace ClientStellaDesktopManager
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			
 			//MessageBox.Show(CurrentComPortObject.GetReadTimeOut("COM1").ToString());
-			labelPasswordDU.Text += CurrentComPortObject.GetPasswordPultDU();
+		}
+
+		//Обработчик нажатия кнопки "СЧИТАТЬ"
+		private void buttonRead_Click(object sender, EventArgs e)
+		{
+			panelForPriceDisplay.Controls.Clear();
+
+			progressInfoMainForm.Visible = true;
+			progressInfoMainForm.Maximum = 20;
+			progressInfoMainForm.Value = 0;
+
+			Label labelInfoFromProcess = new Label();
+			labelInfoFromProcess.Visible = true;
+			labelInfoFromProcess.Text = "Выполняется опрос устройств...";
+			labelInfoFromProcess.AutoSize = true;
+			panelForPriceDisplay.Controls.Add(labelInfoFromProcess);
+
+			CurrentComPortObject.GetRealDeviceList(progressInfoMainForm);
+			//Application.DoEvents();
+
+			int i = 0;
+			if (CurrentComPortObject.realDeviceList.Count > 0)
+			{
+				foreach (KeyValuePair<int, string> infoFromOneDevice in CurrentComPortObject.realDeviceList)
+				{
+					if (infoFromOneDevice.Value != "часы")
+					{
+						Label NameOfFuel = new Label();
+						TextBox PriceOfFuel = new TextBox();
+						panelForPriceDisplay.Controls.Add(NameOfFuel);
+						panelForPriceDisplay.Controls.Add(PriceOfFuel);
+						NameOfFuel.Text = infoFromOneDevice.Key.ToString();
+						NameOfFuel.Enabled = true;
+						NameOfFuel.Width = 30;
+						NameOfFuel.Font = new Font(new FontFamily("Arial"), 10);
+						PriceOfFuel.Text = CurrentComPortObject.GetPriceFromCurrentDevice((byte)infoFromOneDevice.Key);
+						PriceOfFuel.Enabled = true;
+						PriceOfFuel.Width = 100;
+						PriceOfFuel.MaxLength = 5;
+						PriceOfFuel.Font = new Font(new FontFamily("Arial"), 10);
+						NameOfFuel.Location = new Point(20, i * PriceOfFuel.Height + 40);
+						PriceOfFuel.Location = new Point(70, i * PriceOfFuel.Height + 40);
+						i++;
+					}
+					else
+					{
+						labelPasswordDU.Text = "Текущий пароль пульта ДУ: " + CurrentComPortObject.GetPasswordPultDU();	
+					}
+				}
+			}
+			else
+			{
+				Label NonIformation = new Label();
+				panelForPriceDisplay.Controls.Add(NonIformation);
+				NonIformation.AutoSize = true;
+				NonIformation.Text = "Устройств в сети не обнаружено";
+				NonIformation.Location = new Point(40, 40);
+			}
+
+			//System.Threading.Thread.Sleep(1000);
+			labelInfoFromProcess.Visible = false;
+			progressInfoMainForm.Visible = false;
 		}
 
 		private void SavePriceToFile_Click(object sender, EventArgs e)
@@ -106,10 +182,11 @@ namespace ClientStellaDesktopManager
 
 		private void LoadPriceFromFile_Click(object sender, EventArgs e)
 		{
+			panelForPriceDisplay.Controls.Clear();
 			openPriceDialog.InitialDirectory = Application.StartupPath;
 			if (openPriceDialog.ShowDialog() == DialogResult.OK)
 			{
-				string[] CurrentInfoDevice; //Массив по каждой строчке
+				string[] CurrentInfoDevice; //Массив для каждой разбитой строки
 				string[] lines = System.IO.File.ReadAllLines(openPriceDialog.FileName);
 				int i = 0;
 				foreach (string line in lines)
@@ -130,29 +207,38 @@ namespace ClientStellaDesktopManager
 					PriceOfFuel.Font = new Font(new FontFamily("Arial"), 14);
 					NameOfFuel.Location = new Point(20, i*PriceOfFuel.Height + 40);
 					PriceOfFuel.Location = new Point(70, i*PriceOfFuel.Height + 40);
-					PriceOfFuel.KeyPress += new KeyPressEventHandler(EditPrice_KeyPress);
 					PriceOfFuel.Enter += PriceOfFuel_Enter;
-					//PriceOfFuel.KeyDown += PriceOfFuel_KeyDown;
+					PriceOfFuel.KeyPress += new KeyPressEventHandler(EditPrice_KeyPress);
 					PriceOfFuel.TextChanged += new EventHandler(EditPrice_TextChanged);
 					i++;
 				}
 			}
 		}
 
+		//Обработка нажатия пункта меню "Изменить пароль пульта ДУ"
 		private void ChangePasswordPultDU_Click(object sender, EventArgs e)
 		{
 			if (ChangePasswordDUForm == null)
 			{
-				ChangePasswordDUForm = new FChangePasswordDU(this);
+				ChangePasswordDUForm = new FChangePasswordDU();
 				ChangePasswordDUForm.ShowDialog();
 			}
 			else
 			{
 				ChangePasswordDUForm.ShowDialog();
 			}
+
+			if (ChangePasswordDUForm.DialogResult == DialogResult.OK)
+			{
+				if (CurrentComPortObject.SetPasswordPultDU(ChangePasswordDUForm.PasswordPultDUPaket))
+				{
+					labelPasswordDU.Text = "";
+					labelPasswordDU.Text = "Текущий пароль пульта ДУ: " + ChangePasswordDUForm.PasswordString;
+				}
+			}
 		}
 
-		private void AboutProgramm_Click(object sender, EventArgs e)
+		private void AboutProgramm_Click(object sender, EventArgs e)//Обработчик нажатия пункта меню "О программе"
 		{
 			if (AboutProgrammForm == null)
 			{
@@ -185,7 +271,7 @@ namespace ClientStellaDesktopManager
 			{
 				if (GlobalSettingForm == null)
 				{
-					GlobalSettingForm = new FGlobalSetting(this);
+					GlobalSettingForm = new FGlobalSetting(CurrentComPortObject);
 					GlobalSettingForm.ShowDialog();
 				}
 				else
@@ -197,6 +283,12 @@ namespace ClientStellaDesktopManager
 			{
 				return;
 			}
+
+			if (GlobalSettingForm.DialogResult == DialogResult.OK)
+			{
+				Properties.Settings.Default.DigitCapacity = Convert.ToInt32(GlobalSettingForm.DigitCapacity);
+				Properties.Settings.Default.Save();
+			}
 		}
 
 		private void EditPrice_KeyPress(object sender, KeyPressEventArgs e)
@@ -207,17 +299,15 @@ namespace ClientStellaDesktopManager
 			{
 				e.KeyChar = (char)Keys.Clear;
 			}
-			if (((e.KeyChar == '.') || (e.KeyChar == ',')) && introducedPunctuation)//Если мы хотим ввести запятую или точку, но она уже введена
+			//Если мы хотим ввести запятую или точку, но она уже введена...
+			if (((e.KeyChar == '.') || (e.KeyChar == ',')) && introducedPunctuation)
 			{
-				e.KeyChar = (char)Keys.Clear;// То мы не вводим ее второй раз
+				e.KeyChar = (char)Keys.Clear;// То мы не можем ввести ее второй раз
 			}
-			else if (((e.KeyChar == '.') || (e.KeyChar == ',')) && (sender as TextBox).Text.Length == 4)// Если же мы вводим запятую или точку и ее еще нет в тексте
+			//Если же мы вводим запятую или точку и ее еще нет в текстовом поле
+			else if (((e.KeyChar == '.') || (e.KeyChar == ','))) //&& ((sender as TextBox).Text.Length == 4))
 			{
-				(sender as TextBox).MaxLength = 5;// То можем вводить ее, расширяя текст до 5 символов
-			}
-			else
-			{
-				(sender as TextBox).MaxLength = 4;// Если же это не точка или запятая, 
+				(sender as TextBox).MaxLength = 5;// То можно ввести точку или запятую, расширяя текст до 5 символов
 			}
 		}
 
@@ -244,6 +334,7 @@ namespace ClientStellaDesktopManager
 			else
 			{
 				introducedPunctuation = false;
+				(sender as TextBox).MaxLength = 4;
 			}
 		}
 	}
