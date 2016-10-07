@@ -38,14 +38,14 @@
 			this.buttonScanning = new System.Windows.Forms.Button();
 			this.SettingsDisplayDevicesGroup = new System.Windows.Forms.GroupBox();
 			this.UserTableView = new System.Windows.Forms.DataGridView();
-			this.buttonApplyChanges = new System.Windows.Forms.Button();
-			this.GlobalServisesFormProgress = new System.Windows.Forms.ProgressBar();
 			this.ColumnNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ColumnActivated = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.ColumnLabel = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ColumnType = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.ColumnAdress = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.buttonApplyChanges = new System.Windows.Forms.Button();
+			this.GlobalServisesFormProgress = new System.Windows.Forms.ProgressBar();
 			this.MonitoringDevicesGroup.SuspendLayout();
 			this.SettingsDisplayDevicesGroup.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.UserTableView)).BeginInit();
@@ -72,7 +72,7 @@
             this.columnHeader3});
 			this.RealDeviceTable.FullRowSelect = true;
 			this.RealDeviceTable.GridLines = true;
-			this.RealDeviceTable.Location = new System.Drawing.Point(234, 9);
+			this.RealDeviceTable.Location = new System.Drawing.Point(235, 8);
 			this.RealDeviceTable.MultiSelect = false;
 			this.RealDeviceTable.Name = "RealDeviceTable";
 			this.RealDeviceTable.Size = new System.Drawing.Size(202, 240);
@@ -164,27 +164,6 @@
 			this.UserTableView.TabIndex = 0;
 			this.UserTableView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserTableView_CellContentClick);
 			// 
-			// buttonApplyChanges
-			// 
-			this.buttonApplyChanges.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonApplyChanges.Location = new System.Drawing.Point(120, 548);
-			this.buttonApplyChanges.Name = "buttonApplyChanges";
-			this.buttonApplyChanges.Size = new System.Drawing.Size(221, 39);
-			this.buttonApplyChanges.TabIndex = 2;
-			this.buttonApplyChanges.Text = "Применить изменения";
-			this.buttonApplyChanges.UseVisualStyleBackColor = true;
-			this.buttonApplyChanges.Click += new System.EventHandler(this.buttonApplyChanges_Click);
-			// 
-			// GlobalServisesFormProgress
-			// 
-			this.GlobalServisesFormProgress.Location = new System.Drawing.Point(12, 262);
-			this.GlobalServisesFormProgress.Maximum = 20;
-			this.GlobalServisesFormProgress.Name = "GlobalServisesFormProgress";
-			this.GlobalServisesFormProgress.Size = new System.Drawing.Size(439, 13);
-			this.GlobalServisesFormProgress.TabIndex = 3;
-			this.GlobalServisesFormProgress.Value = 20;
-			this.GlobalServisesFormProgress.Visible = false;
-			// 
 			// ColumnNumber
 			// 
 			this.ColumnNumber.HeaderText = "№";
@@ -228,6 +207,27 @@
 			this.ColumnAdress.Sorted = true;
 			this.ColumnAdress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
 			this.ColumnAdress.Width = 62;
+			// 
+			// buttonApplyChanges
+			// 
+			this.buttonApplyChanges.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.buttonApplyChanges.Location = new System.Drawing.Point(120, 548);
+			this.buttonApplyChanges.Name = "buttonApplyChanges";
+			this.buttonApplyChanges.Size = new System.Drawing.Size(221, 39);
+			this.buttonApplyChanges.TabIndex = 2;
+			this.buttonApplyChanges.Text = "Применить изменения";
+			this.buttonApplyChanges.UseVisualStyleBackColor = true;
+			this.buttonApplyChanges.Click += new System.EventHandler(this.buttonApplyChanges_Click);
+			// 
+			// GlobalServisesFormProgress
+			// 
+			this.GlobalServisesFormProgress.Location = new System.Drawing.Point(12, 262);
+			this.GlobalServisesFormProgress.Maximum = 20;
+			this.GlobalServisesFormProgress.Name = "GlobalServisesFormProgress";
+			this.GlobalServisesFormProgress.Size = new System.Drawing.Size(439, 13);
+			this.GlobalServisesFormProgress.TabIndex = 3;
+			this.GlobalServisesFormProgress.Value = 20;
+			this.GlobalServisesFormProgress.Visible = false;
 			// 
 			// FGlobalSetting
 			// 

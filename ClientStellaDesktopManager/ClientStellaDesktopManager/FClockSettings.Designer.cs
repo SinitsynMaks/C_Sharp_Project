@@ -39,11 +39,6 @@
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.buttonsave = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -51,6 +46,11 @@
 			this.comboBox4 = new System.Windows.Forms.ComboBox();
 			this.label7 = new System.Windows.Forms.Label();
 			this.comboBox5 = new System.Windows.Forms.ComboBox();
+			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
@@ -164,46 +164,6 @@
 			this.dataGridView1.Size = new System.Drawing.Size(355, 228);
 			this.dataGridView1.TabIndex = 0;
 			// 
-			// Column1
-			// 
-			this.Column1.Frozen = true;
-			this.Column1.HeaderText = "Бит";
-			this.Column1.Name = "Column1";
-			this.Column1.ReadOnly = true;
-			this.Column1.Width = 35;
-			// 
-			// Column2
-			// 
-			this.Column2.Frozen = true;
-			this.Column2.HeaderText = "Обозначение";
-			this.Column2.Name = "Column2";
-			this.Column2.ReadOnly = true;
-			this.Column2.Width = 90;
-			// 
-			// Column3
-			// 
-			this.Column3.Frozen = true;
-			this.Column3.HeaderText = "Описание";
-			this.Column3.Name = "Column3";
-			this.Column3.ReadOnly = true;
-			this.Column3.Width = 122;
-			// 
-			// Column4
-			// 
-			this.Column4.Frozen = true;
-			this.Column4.HeaderText = "Вкл/выкл";
-			this.Column4.Name = "Column4";
-			this.Column4.Width = 62;
-			// 
-			// Column5
-			// 
-			this.Column5.Frozen = true;
-			this.Column5.HeaderText = "Флаг";
-			this.Column5.Name = "Column5";
-			this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			this.Column5.Width = 42;
-			// 
 			// buttonsave
 			// 
 			this.buttonsave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -268,11 +228,48 @@
 			this.comboBox5.Size = new System.Drawing.Size(83, 21);
 			this.comboBox5.TabIndex = 16;
 			// 
+			// Column1
+			// 
+			this.Column1.Frozen = true;
+			this.Column1.HeaderText = "Бит";
+			this.Column1.Name = "Column1";
+			this.Column1.Width = 35;
+			// 
+			// Column2
+			// 
+			this.Column2.Frozen = true;
+			this.Column2.HeaderText = "Обозначение";
+			this.Column2.Name = "Column2";
+			this.Column2.ReadOnly = true;
+			this.Column2.Width = 90;
+			// 
+			// Column3
+			// 
+			this.Column3.Frozen = true;
+			this.Column3.HeaderText = "Описание режима";
+			this.Column3.Name = "Column3";
+			this.Column3.ReadOnly = true;
+			this.Column3.Width = 125;
+			// 
+			// Column4
+			// 
+			this.Column4.Frozen = true;
+			this.Column4.HeaderText = "Вкл/выкл";
+			this.Column4.Name = "Column4";
+			this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+			this.Column4.Width = 60;
+			// 
+			// Column5
+			// 
+			this.Column5.HeaderText = "Флаг";
+			this.Column5.Name = "Column5";
+			this.Column5.Width = 50;
+			// 
 			// FClockSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(364, 510);
+			this.ClientSize = new System.Drawing.Size(364, 512);
 			this.Controls.Add(this.comboBox5);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.comboBox4);
