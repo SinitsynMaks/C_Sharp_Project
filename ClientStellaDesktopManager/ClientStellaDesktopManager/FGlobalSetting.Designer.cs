@@ -28,7 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.MonitoringDevicesGroup = new System.Windows.Forms.GroupBox();
+			this.comboBoxBaudrate = new System.Windows.Forms.ComboBox();
+			this.comboBoxPortName = new System.Windows.Forms.ComboBox();
 			this.RealDeviceTable = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -53,6 +56,8 @@
 			// 
 			// MonitoringDevicesGroup
 			// 
+			this.MonitoringDevicesGroup.Controls.Add(this.comboBoxBaudrate);
+			this.MonitoringDevicesGroup.Controls.Add(this.comboBoxPortName);
 			this.MonitoringDevicesGroup.Controls.Add(this.RealDeviceTable);
 			this.MonitoringDevicesGroup.Controls.Add(this.comboBoxDigitValue);
 			this.MonitoringDevicesGroup.Controls.Add(this.labelDigitCapacity);
@@ -63,6 +68,24 @@
 			this.MonitoringDevicesGroup.TabIndex = 0;
 			this.MonitoringDevicesGroup.TabStop = false;
 			this.MonitoringDevicesGroup.Text = "Мониторинг устройств";
+			// 
+			// comboBoxBaudrate
+			// 
+			this.comboBoxBaudrate.FormattingEnabled = true;
+			this.comboBoxBaudrate.Location = new System.Drawing.Point(18, 82);
+			this.comboBoxBaudrate.Name = "comboBoxBaudrate";
+			this.comboBoxBaudrate.Size = new System.Drawing.Size(127, 21);
+			this.comboBoxBaudrate.TabIndex = 5;
+			this.comboBoxBaudrate.SelectedValueChanged += new System.EventHandler(this.comboBoxBaudrate_SelectedValueChanged);
+			// 
+			// comboBoxPortName
+			// 
+			this.comboBoxPortName.FormattingEnabled = true;
+			this.comboBoxPortName.Location = new System.Drawing.Point(18, 33);
+			this.comboBoxPortName.Name = "comboBoxPortName";
+			this.comboBoxPortName.Size = new System.Drawing.Size(127, 21);
+			this.comboBoxPortName.TabIndex = 4;
+			this.comboBoxPortName.SelectedValueChanged += new System.EventHandler(this.comboBoxPortName_SelectedValueChanged);
 			// 
 			// RealDeviceTable
 			// 
@@ -105,16 +128,16 @@
             "4",
             "5",
             "6"});
-			this.comboBoxDigitValue.Location = new System.Drawing.Point(91, 187);
+			this.comboBoxDigitValue.Location = new System.Drawing.Point(94, 218);
 			this.comboBoxDigitValue.Name = "comboBoxDigitValue";
-			this.comboBoxDigitValue.Size = new System.Drawing.Size(35, 21);
+			this.comboBoxDigitValue.Size = new System.Drawing.Size(51, 21);
 			this.comboBoxDigitValue.TabIndex = 2;
 			this.comboBoxDigitValue.SelectedValueChanged += new System.EventHandler(this.comboBoxDigitValue_SelectedValueChanged);
 			// 
 			// labelDigitCapacity
 			// 
 			this.labelDigitCapacity.AutoSize = true;
-			this.labelDigitCapacity.Location = new System.Drawing.Point(12, 190);
+			this.labelDigitCapacity.Location = new System.Drawing.Point(15, 221);
 			this.labelDigitCapacity.Name = "labelDigitCapacity";
 			this.labelDigitCapacity.Size = new System.Drawing.Size(73, 13);
 			this.labelDigitCapacity.TabIndex = 1;
@@ -122,11 +145,11 @@
 			// 
 			// buttonScanning
 			// 
-			this.buttonScanning.Location = new System.Drawing.Point(15, 144);
+			this.buttonScanning.Location = new System.Drawing.Point(18, 139);
 			this.buttonScanning.Name = "buttonScanning";
-			this.buttonScanning.Size = new System.Drawing.Size(127, 23);
+			this.buttonScanning.Size = new System.Drawing.Size(127, 40);
 			this.buttonScanning.TabIndex = 0;
-			this.buttonScanning.Text = "Найти устройства";
+			this.buttonScanning.Text = "Пересканировать устройства";
 			this.buttonScanning.UseVisualStyleBackColor = true;
 			this.buttonScanning.Click += new System.EventHandler(this.buttonScanning_Click);
 			// 
@@ -155,22 +178,31 @@
             this.ColumnType,
             this.ColumnValue,
             this.ColumnAdress});
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.UserTableView.DefaultCellStyle = dataGridViewCellStyle1;
 			this.UserTableView.Location = new System.Drawing.Point(0, 19);
 			this.UserTableView.MultiSelect = false;
 			this.UserTableView.Name = "UserTableView";
 			this.UserTableView.RowHeadersVisible = false;
-			this.UserTableView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+			this.UserTableView.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			this.UserTableView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.UserTableView.Size = new System.Drawing.Size(436, 232);
 			this.UserTableView.TabIndex = 0;
-			this.UserTableView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserTableView_CellContentClick);
 			// 
 			// ColumnNumber
 			// 
+			this.ColumnNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.ColumnNumber.HeaderText = "№";
 			this.ColumnNumber.Name = "ColumnNumber";
 			this.ColumnNumber.ReadOnly = true;
 			this.ColumnNumber.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.ColumnNumber.Width = 27;
+			this.ColumnNumber.Width = 30;
 			// 
 			// ColumnActivated
 			// 
@@ -190,7 +222,6 @@
 			this.ColumnType.HeaderText = "Тип";
 			this.ColumnType.Name = "ColumnType";
 			this.ColumnType.ReadOnly = true;
-			this.ColumnType.Width = 110;
 			// 
 			// ColumnValue
 			// 
@@ -200,13 +231,13 @@
 			// 
 			// ColumnAdress
 			// 
-			this.ColumnAdress.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+			this.ColumnAdress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
 			this.ColumnAdress.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
 			this.ColumnAdress.HeaderText = "Адрес";
 			this.ColumnAdress.Name = "ColumnAdress";
 			this.ColumnAdress.Sorted = true;
 			this.ColumnAdress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-			this.ColumnAdress.Width = 62;
+			this.ColumnAdress.Width = 55;
 			// 
 			// buttonApplyChanges
 			// 
@@ -273,5 +304,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ColumnType;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
 		private System.Windows.Forms.DataGridViewComboBoxColumn ColumnAdress;
+		private System.Windows.Forms.ComboBox comboBoxBaudrate;
+		private System.Windows.Forms.ComboBox comboBoxPortName;
 	}
 }

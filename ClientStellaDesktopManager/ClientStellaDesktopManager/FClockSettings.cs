@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,22 @@ namespace ClientStellaDesktopManager
 {
 	public partial class FClockSettings : Form
 	{
+		private static FClockSettings forminstance; //Ссылка хранит экземпляр окна
+
+		private FClockSettings()
+		{
+			InitializeComponent();
+		}
+
+		public static FClockSettings CreateFclocksettingsWindow()
+		{
+			if (forminstance == null || forminstance.IsDisposed)
+			{
+				forminstance = new FClockSettings();
+			}
+			return forminstance;
+		}
+
 		public Button ButtonSaveSettings
 		{
 			get
@@ -36,16 +53,9 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
-		public FClockSettings()
-		{
-			InitializeComponent();
-		}
 
 		private void FClockSettings_Shown(object sender, EventArgs e)
 		{
-			//Column4.Items.Add("Выкл");// Items[0]
-			//Column4.Items.Add("Вкл");// Items[1]
-
 			dataGridView1.Rows.Add(1, "NC", "Не используется", false, 0);
 			dataGridView1.Rows.Add(2, "rAdi", "Радиация", false, 0);
 			dataGridView1.Rows.Add(3, "Hu", "Влажность", false, 0);

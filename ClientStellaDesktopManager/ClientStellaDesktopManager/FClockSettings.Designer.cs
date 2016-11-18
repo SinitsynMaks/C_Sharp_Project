@@ -39,20 +39,23 @@
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.buttonsave = new System.Windows.Forms.Button();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.comboBox3 = new System.Windows.Forms.ComboBox();
-			this.comboBox4 = new System.Windows.Forms.ComboBox();
-			this.label7 = new System.Windows.Forms.Label();
-			this.comboBox5 = new System.Windows.Forms.ComboBox();
 			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.buttonsave = new System.Windows.Forms.Button();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+			this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -164,70 +167,6 @@
 			this.dataGridView1.Size = new System.Drawing.Size(355, 228);
 			this.dataGridView1.TabIndex = 0;
 			// 
-			// buttonsave
-			// 
-			this.buttonsave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.buttonsave.Location = new System.Drawing.Point(76, 465);
-			this.buttonsave.Name = "buttonsave";
-			this.buttonsave.Size = new System.Drawing.Size(227, 33);
-			this.buttonsave.TabIndex = 9;
-			this.buttonsave.Text = "Сохранить изменения";
-			this.buttonsave.UseVisualStyleBackColor = true;
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label5.Location = new System.Drawing.Point(1, 354);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(243, 17);
-			this.label5.TabIndex = 10;
-			this.label5.Text = "Время между переключениями, сек";
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label6.Location = new System.Drawing.Point(1, 383);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(213, 17);
-			this.label6.TabIndex = 12;
-			this.label6.Text = "Формат отображения времени";
-			// 
-			// comboBox3
-			// 
-			this.comboBox3.FormattingEnabled = true;
-			this.comboBox3.Location = new System.Drawing.Point(254, 383);
-			this.comboBox3.Name = "comboBox3";
-			this.comboBox3.Size = new System.Drawing.Size(83, 21);
-			this.comboBox3.TabIndex = 13;
-			// 
-			// comboBox4
-			// 
-			this.comboBox4.FormattingEnabled = true;
-			this.comboBox4.Location = new System.Drawing.Point(254, 354);
-			this.comboBox4.Name = "comboBox4";
-			this.comboBox4.Size = new System.Drawing.Size(83, 21);
-			this.comboBox4.TabIndex = 14;
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.label7.Location = new System.Drawing.Point(175, 414);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(52, 17);
-			this.label7.TabIndex = 15;
-			this.label7.Text = "AM/PM";
-			// 
-			// comboBox5
-			// 
-			this.comboBox5.FormattingEnabled = true;
-			this.comboBox5.Location = new System.Drawing.Point(254, 413);
-			this.comboBox5.Name = "comboBox5";
-			this.comboBox5.Size = new System.Drawing.Size(83, 21);
-			this.comboBox5.TabIndex = 16;
-			// 
 			// Column1
 			// 
 			this.Column1.Frozen = true;
@@ -263,17 +202,89 @@
 			// 
 			this.Column5.HeaderText = "Флаг";
 			this.Column5.Name = "Column5";
+			this.Column5.ReadOnly = true;
 			this.Column5.Width = 50;
+			// 
+			// buttonsave
+			// 
+			this.buttonsave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.buttonsave.Location = new System.Drawing.Point(72, 441);
+			this.buttonsave.Name = "buttonsave";
+			this.buttonsave.Size = new System.Drawing.Size(227, 33);
+			this.buttonsave.TabIndex = 9;
+			this.buttonsave.Text = "Сохранить изменения";
+			this.buttonsave.UseVisualStyleBackColor = true;
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label5.Location = new System.Drawing.Point(31, 356);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(243, 17);
+			this.label5.TabIndex = 10;
+			this.label5.Text = "Время между переключениями, сек";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label6.Location = new System.Drawing.Point(83, 382);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(191, 17);
+			this.label6.TabIndex = 12;
+			this.label6.Text = "Формат 24/12 (24 =0, 12=1)";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label7.Location = new System.Drawing.Point(223, 405);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(52, 17);
+			this.label7.TabIndex = 15;
+			this.label7.Text = "AM/PM";
+			// 
+			// numericUpDown1
+			// 
+			this.numericUpDown1.Location = new System.Drawing.Point(281, 405);
+			this.numericUpDown1.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numericUpDown1.Name = "numericUpDown1";
+			this.numericUpDown1.Size = new System.Drawing.Size(56, 20);
+			this.numericUpDown1.TabIndex = 16;
+			// 
+			// numericUpDown2
+			// 
+			this.numericUpDown2.Location = new System.Drawing.Point(281, 380);
+			this.numericUpDown2.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numericUpDown2.Name = "numericUpDown2";
+			this.numericUpDown2.Size = new System.Drawing.Size(56, 20);
+			this.numericUpDown2.TabIndex = 17;
+			// 
+			// numericUpDown3
+			// 
+			this.numericUpDown3.Location = new System.Drawing.Point(281, 356);
+			this.numericUpDown3.Name = "numericUpDown3";
+			this.numericUpDown3.Size = new System.Drawing.Size(56, 20);
+			this.numericUpDown3.TabIndex = 18;
 			// 
 			// FClockSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(364, 512);
-			this.Controls.Add(this.comboBox5);
+			this.ClientSize = new System.Drawing.Size(364, 484);
+			this.Controls.Add(this.numericUpDown3);
+			this.Controls.Add(this.numericUpDown2);
+			this.Controls.Add(this.numericUpDown1);
 			this.Controls.Add(this.label7);
-			this.Controls.Add(this.comboBox4);
-			this.Controls.Add(this.comboBox3);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.buttonsave);
@@ -294,6 +305,9 @@
 			this.Shown += new System.EventHandler(this.FClockSettings_Shown);
 			this.groupBox1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -314,14 +328,14 @@
 		private System.Windows.Forms.DataGridView dataGridView1;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.ComboBox comboBox3;
-		private System.Windows.Forms.ComboBox comboBox4;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.ComboBox comboBox5;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn Column4;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.NumericUpDown numericUpDown2;
+		private System.Windows.Forms.NumericUpDown numericUpDown3;
 	}
 }

@@ -9,6 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Configuration;
 
 namespace ClientStellaDesktopManager
 {
@@ -58,19 +61,27 @@ namespace ClientStellaDesktopManager
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			CurrentComPortObject = new ComPort(); //В конструкторе класса ComPort уже известно об имеющихся портах в системе
+			if (!System.IO.File.Exists("settings.xml"))
+			{
+				CreateDefaultXmlsettingsFile();
+			}
+
+			//В конструкторе класса ComPort стало известно об имеющихся портах в системе
+			CurrentComPortObject = new ComPort(); 
 			FormBorderStyle = FormBorderStyle.FixedSingle;
-			CommonDataStore.digitCapacity = Properties.Settings.Default.DigitCapacity;
+			int digitCapacity = Properties.Settings.Default.DigitCapacity;
 		}
 
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			progressBarScanningDevice.Visible = false;
-			CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);// Открываем порт с ранее сохраненными настройками
 
+			// Открываем порт с ранее сохраненными настройками
+			CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);
 		}
 
-		private void PortSettings_Click(object sender, EventArgs e)// Обработка нажатия пункта меню "настройки порта"
+		// Обработка нажатия пункта меню "настройки порта"
+		private void PortSettings_Click(object sender, EventArgs e)
 		{
 			CallSettingsForm();
 		}
@@ -80,7 +91,7 @@ namespace ClientStellaDesktopManager
 			if (PortConfigForm == null)
 			{
 				PortConfigForm = new FConfiguringPorts(CurrentComPortObject);
-				CurrentComPortObject.Close(NameOfCurrentComPort);
+				//CurrentComPortObject.Close(NameOfCurrentComPort);
 				PortConfigForm.ShowDialog();
 			}
 			else
@@ -107,9 +118,61 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
+		private void CreateDefaultXmlsettingsFile()
+		{
+			XmlTextWriter textWritter = new XmlTextWriter("settings.xml", null);
+			textWritter.WriteStartDocument();
+			textWritter.Formatting = Formatting.Indented;
+			textWritter.WriteStartElement("allsettings");
+			textWritter.WriteEndElement();
+			textWritter.Close();
+
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load("settings.xml");
+
+			XmlElement ComPortsettingsSection = xmlDoc.CreateElement("ComPortsettings");
+			xmlDoc.DocumentElement.AppendChild(ComPortsettingsSection);
+
+			XmlElement Port = xmlDoc.CreateElement("Port");
+			Port.InnerText = "COM1";
+			ComPortsettingsSection.AppendChild(Port);
+
+			XmlElement PortIndex = xmlDoc.CreateElement("PortIndex");
+			PortIndex.InnerText = "0";
+			ComPortsettingsSection.AppendChild(PortIndex);
+
+			xmlDoc.Save("settings.xml");
+		}
+
 		private void button1_Click(object sender, EventArgs e)
 		{
-			
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load("settings.xml");
+			XmlNodeList nodelist = xmlDoc.SelectNodes("allsettings/UserTableViewSection");
+			if (nodelist.Count > 0)
+			{
+				foreach (XmlNode item in nodelist)
+				{
+					xmlDoc.DocumentElement.RemoveChild(item);
+				}
+			}
+			xmlDoc.Save("settings.xml");
+
+			/*
+			MySettings MySection = MySettings.CreateMySettingsSection();
+			MySection.DBName = "SWH";
+			MySection.DBPassword = "zx";
+			MySection.DBServer = "172";
+			MySection.DBUser = "sini";
+			foreach (var item in MySection.CurrentConfiguration.Sections)
+			{
+				MessageBox.Show(item.ToString());
+			}
+			*/
+
+			//CreateDefaultXmlsettingsFile();
+			//XmlDocument doc = new XmlDocument();
+			//doc.Load("settings.xml");
 			//MessageBox.Show(CurrentComPortObject.GetReadTimeOut("COM1").ToString());
 		}
 
@@ -127,26 +190,29 @@ namespace ClientStellaDesktopManager
 			labelInfoFromProcess.Text = "Выполняется опрос устройств...";
 			labelInfoFromProcess.AutoSize = true;
 			panelForPriceDisplay.Controls.Add(labelInfoFromProcess);
+			Application.DoEvents();
 
-			CurrentComPortObject.GetRealDeviceList(progressInfoMainForm);
-			//Application.DoEvents();
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load("settings.xml");
+			XmlNode node = xmlDoc.SelectSingleNode("allsettings/FromRealdeviceList");
 
-			int i = 0;
-			if (CurrentComPortObject.realDeviceList.Count > 0)
+			if ((node != null) && (node.HasChildNodes))
 			{
-				foreach (KeyValuePair<int, string> infoFromOneDevice in CurrentComPortObject.realDeviceList)
+				int i = 0;
+				foreach (XmlNode device in node.ChildNodes)
 				{
-					if (infoFromOneDevice.Value != "часы")
+					MessageBox.Show(device.Name);
+					if (device.Name != "clockdevice ")
 					{
 						Label NameOfFuel = new Label();
 						TextBox PriceOfFuel = new TextBox();
 						panelForPriceDisplay.Controls.Add(NameOfFuel);
 						panelForPriceDisplay.Controls.Add(PriceOfFuel);
-						NameOfFuel.Text = infoFromOneDevice.Key.ToString();
+						NameOfFuel.Text = device.Name;
 						NameOfFuel.Enabled = true;
 						NameOfFuel.Width = 30;
-						NameOfFuel.Font = new Font(new FontFamily("Arial"), 10);
-						PriceOfFuel.Text = CurrentComPortObject.GetPriceFromCurrentDevice((byte)infoFromOneDevice.Key);
+						NameOfFuel.Font = new Font(new FontFamily("Arial"), 5);
+						PriceOfFuel.Text = CurrentComPortObject.GetPriceFromCurrentDevice(Convert.ToByte(device.InnerText));
 						PriceOfFuel.Enabled = true;
 						PriceOfFuel.Width = 100;
 						PriceOfFuel.MaxLength = 5;
@@ -157,27 +223,72 @@ namespace ClientStellaDesktopManager
 					}
 					else
 					{
-						labelPasswordDU.Text = "Текущий пароль пульта ДУ: " + CurrentComPortObject.GetPasswordPultDU();	
+						labelPasswordDU.Text = "Текущий пароль пульта ДУ: " + CurrentComPortObject.GetPasswordPultDU();
 					}
 				}
 			}
 			else
 			{
-				Label NonIformation = new Label();
-				panelForPriceDisplay.Controls.Add(NonIformation);
-				NonIformation.AutoSize = true;
-				NonIformation.Text = "Устройств в сети не обнаружено";
-				NonIformation.Location = new Point(40, 40);
+				// Получаем realDeviceList (SortedList)
+				CurrentComPortObject.GetRealDeviceList(progressInfoMainForm);
+				if (CurrentComPortObject.realDeviceList.Count > 0)
+				{
+					int i = 0;
+					foreach (KeyValuePair<int, string> infoFromOneDevice in CurrentComPortObject.realDeviceList)
+					{
+						if (infoFromOneDevice.Value != "часы")
+						{
+							Label NameOfFuel = new Label();
+							TextBox PriceOfFuel = new TextBox();
+							panelForPriceDisplay.Controls.Add(NameOfFuel);
+							panelForPriceDisplay.Controls.Add(PriceOfFuel);
+							NameOfFuel.Text = infoFromOneDevice.Key.ToString();
+							NameOfFuel.Enabled = true;
+							NameOfFuel.Width = 30;
+							NameOfFuel.Font = new Font(new FontFamily("Arial"), 10);
+							PriceOfFuel.Text = CurrentComPortObject.GetPriceFromCurrentDevice((byte)infoFromOneDevice.Key);
+							PriceOfFuel.Enabled = true;
+							PriceOfFuel.Width = 100;
+							PriceOfFuel.MaxLength = 5;
+							PriceOfFuel.Font = new Font(new FontFamily("Arial"), 10);
+							NameOfFuel.Location = new Point(20, i * PriceOfFuel.Height + 40);
+							PriceOfFuel.Location = new Point(70, i * PriceOfFuel.Height + 40);
+							i++;
+						}
+						else
+						{
+							labelPasswordDU.Text = "Текущий пароль пульта ДУ: " + CurrentComPortObject.GetPasswordPultDU();
+						}
+					}
+				}
+				else
+				{
+					Label NonIformation = new Label();
+					panelForPriceDisplay.Controls.Add(NonIformation);
+					NonIformation.AutoSize = true;
+					NonIformation.Text = "Устройств в сети не обнаружено";
+					NonIformation.Location = new Point(40, 40);
+				}
 			}
 
-			//System.Threading.Thread.Sleep(1000);
+			System.Threading.Thread.Sleep(100);
+			Application.DoEvents();
+			System.Threading.Thread.Sleep(500);
 			labelInfoFromProcess.Visible = false;
 			progressInfoMainForm.Visible = false;
 		}
 
 		private void SavePriceToFile_Click(object sender, EventArgs e)
 		{
-
+			if (CurrentComPortObject.realDeviceList.Count > 0)
+			{
+				foreach (KeyValuePair<int, string> infoFromOneDevice in CurrentComPortObject.realDeviceList)
+				{
+					string str = "";
+					str = infoFromOneDevice.ToString();
+					MessageBox.Show(str);
+				}
+			}
 		}
 
 		private void LoadPriceFromFile_Click(object sender, EventArgs e)
@@ -187,6 +298,7 @@ namespace ClientStellaDesktopManager
 			if (openPriceDialog.ShowDialog() == DialogResult.OK)
 			{
 				string[] CurrentInfoDevice; //Массив для каждой разбитой строки
+
 				string[] lines = System.IO.File.ReadAllLines(openPriceDialog.FileName);
 				int i = 0;
 				foreach (string line in lines)
@@ -238,7 +350,8 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
-		private void AboutProgramm_Click(object sender, EventArgs e)//Обработчик нажатия пункта меню "О программе"
+		//Обработчик нажатия пункта меню "О программе"
+		private void AboutProgramm_Click(object sender, EventArgs e)
 		{
 			if (AboutProgrammForm == null)
 			{
@@ -272,10 +385,12 @@ namespace ClientStellaDesktopManager
 				if (GlobalSettingForm == null)
 				{
 					GlobalSettingForm = new FGlobalSetting(CurrentComPortObject);
+					//CurrentComPortObject.Close(NameOfCurrentComPort);
 					GlobalSettingForm.ShowDialog();
 				}
 				else
 				{
+					CurrentComPortObject.Close(NameOfCurrentComPort);
 					GlobalSettingForm.ShowDialog();
 				}
 			}
@@ -284,10 +399,92 @@ namespace ClientStellaDesktopManager
 				return;
 			}
 
+			//Если в окне настроек мы нажали клавишу "Сохранить изменения"
 			if (GlobalSettingForm.DialogResult == DialogResult.OK)
 			{
+				panelForPriceDisplay.Controls.Clear();
+
+				if (CurrentComPortObject.realDeviceList.Count > 0)
+				{
+					int rowcount = GlobalSettingForm.CustomVisibleInfoTable.Rows.Count;
+					for (int i = 0; i < rowcount; i++)
+					{
+						if ((bool)GlobalSettingForm.CustomVisibleInfoTable[1, i].Value)
+						{
+							string labeltext = GlobalSettingForm.CustomVisibleInfoTable[2, i].Value.ToString();
+							string fueltext = GlobalSettingForm.CustomVisibleInfoTable[4, i].Value.ToString();
+							Label NameOfFuel = new Label();
+							TextBox PriceOfFuel = new TextBox();
+							panelForPriceDisplay.Controls.Add(NameOfFuel);
+							panelForPriceDisplay.Controls.Add(PriceOfFuel);
+							NameOfFuel.Text = labeltext;
+							NameOfFuel.Enabled = true;
+							NameOfFuel.Width = 40;
+							NameOfFuel.Font = new Font(new FontFamily("Arial"), 10);
+							PriceOfFuel.Text = fueltext;
+							PriceOfFuel.Enabled = true;
+							PriceOfFuel.Width = 100;
+							PriceOfFuel.MaxLength = 5;
+							PriceOfFuel.Font = new Font(new FontFamily("Arial"), 10);
+							NameOfFuel.Location = new Point(20, i * PriceOfFuel.Height + 40);
+							PriceOfFuel.Location = new Point(70, i * PriceOfFuel.Height + 40);
+						}
+					}
+				}
+
+				int count = GlobalSettingForm.CustomVisibleInfoTable.RowCount;
+				if (count > 0)
+				{
+					XmlDocument xmlDoc = new XmlDocument();
+					xmlDoc.Load("settings.xml");
+
+					XmlNodeList nodelist = xmlDoc.SelectNodes("allsettings/UserTableViewSection");
+					if (nodelist.Count > 0)
+					{
+						foreach (XmlNode item in nodelist)
+						{
+							xmlDoc.DocumentElement.RemoveChild(item);
+						}
+						xmlDoc.Save("settings.xml");
+					}
+
+
+					XmlElement UserTableViewSection = xmlDoc.CreateElement("UserTableViewSection");
+					xmlDoc.DocumentElement.AppendChild(UserTableViewSection);
+
+					for (int i = 0; i < count; i++)
+					{
+						XmlElement CurrentUserTableViewRow = xmlDoc.CreateElement("Row");
+						CurrentUserTableViewRow.SetAttribute("number", (i+1).ToString()); // Порядковый номер строки
+						CurrentUserTableViewRow.SetAttribute("visible",
+							GlobalSettingForm.CustomVisibleInfoTable[1, i].Value.ToString()); // Значение из 2 ячейки строки
+						CurrentUserTableViewRow.SetAttribute("label",
+							GlobalSettingForm.CustomVisibleInfoTable[2, i].Value.ToString()); // Значение из 3 ячейки строки
+						CurrentUserTableViewRow.SetAttribute("device",
+							GlobalSettingForm.CustomVisibleInfoTable[3, i].Value.ToString()); // Значение из 4 ячейки строки
+						CurrentUserTableViewRow.SetAttribute("value",
+							GlobalSettingForm.CustomVisibleInfoTable[4, i].Value.ToString()); // Значение из 5 ячейки строки
+						CurrentUserTableViewRow.SetAttribute("adress",
+							GlobalSettingForm.CustomVisibleInfoTable[5, i].Value.ToString()); // Значение из 6 ячейки строки
+						UserTableViewSection.AppendChild(CurrentUserTableViewRow);
+					}
+					xmlDoc.Save("settings.xml");
+				}
+
 				Properties.Settings.Default.DigitCapacity = Convert.ToInt32(GlobalSettingForm.DigitCapacity);
+				Properties.Settings.Default.PortName = GlobalSettingForm.portName;
+				Properties.Settings.Default.BaudRates = GlobalSettingForm.baudRate;
 				Properties.Settings.Default.Save();
+				NameOfCurrentComPort = GlobalSettingForm.portName;
+				BaudRate = GlobalSettingForm.baudRate;
+				CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);
+				MessageBox.Show("Текущий порт " + NameOfCurrentComPort + "\n"
+					+ "Текущая скорость " + BaudRate, "Изменение настроек порта");
+			}
+			else
+			{
+					//Если ты просто закрыл окно настроек;
+					CurrentComPortObject.Open(NameOfCurrentComPort, BaudRate);
 			}
 		}
 
@@ -336,6 +533,11 @@ namespace ClientStellaDesktopManager
 				introducedPunctuation = false;
 				(sender as TextBox).MaxLength = 4;
 			}
+		}
+
+		private void buttonWrite_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

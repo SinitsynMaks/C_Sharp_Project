@@ -15,6 +15,7 @@ namespace ClientStellaDesktopManager
 	public partial class FConfiguringPorts : Form
 	{
 		private ComPort LinkToComPort = null;
+
 		public string portName;
 		public int baudRate;
 
@@ -29,9 +30,13 @@ namespace ClientStellaDesktopManager
 			portName = Properties.Settings.Default.PortName;
 			baudRate = Properties.Settings.Default.BaudRates;
 
-			comboBoxPortName.Items.Clear(); // Очистка содержимого бокса для нового заполненияё
-			comboBoxPortName.Items.AddRange(LinkToComPort.GetAvailablePortNamesList); // Загружаем список доступных портов в бокс через свойство класса ComPort
-			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName); // Отображаем порт из настроект
+			comboBoxPortName.Items.Clear();
+
+			// Загружаем список доступных портов в бокс через свойство класса ComPort
+			comboBoxPortName.Items.AddRange(LinkToComPort.GetAvailablePortNamesList);
+
+			// Отображаем порт из настроект
+			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName); 
 			comboBoxBaudRate.Items.Clear();
 			comboBoxBaudRate.Items.AddRange(LinkToComPort.baudRates);
 			comboBoxBaudRate.SelectedIndex = comboBoxBaudRate.Items.IndexOf(baudRate);

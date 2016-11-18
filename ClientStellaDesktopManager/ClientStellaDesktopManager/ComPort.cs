@@ -3,22 +3,36 @@ using System.IO;
 using System.IO.Ports;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace ClientStellaDesktopManager
 {
 	public class ComPort
 	{
-		private SerialPort port = null; // Закрытое поле класса - объект компорта
-		public Dictionary<string, SerialPort> MyComPortsDictionary = null; //Закрытое поле класса - словарь доступных портов
-		private List<string> PortNamesList = null;  //Закрытое поле класса - массив всех доступных портов в системе
-		public object[] baudRates = { 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 256000 };
+		// Закрытое поле класса - сам .NET объект для работы с компортом
+		private SerialPort port = null;
+
+		//Словарь доступных портов типа "COM1=port1"
+		public Dictionary<string, SerialPort> MyComPortsDictionary = null;
+
+		//Поле - список имен всех портов в системе. 
+		//Заполняется методом FillAvailablePortNamesList
+		private List<string> AvailablePortNamesList = null;
+
+		// Список пар вида "<адрес>-<тип устройства>" сортированных по адресу.
+		//Заполняется методом GetRealDeviceList.
 		public SortedList<int, string> realDeviceList;
+
+		public object[] baudRates = { 110, 300, 600, 1200, 2400, 4800, 9600, 14400,
+									19200, 38400, 56000, 57600, 115200, 128000, 256000 };
+
+		//Объект, отображающий ход выполнения задачи
 		private ProgressBar progressInfo;
 
 		public ComPort()
 		{
 			MyComPortsDictionary = new Dictionary<string, SerialPort>();
-			PortNamesList = new List<string>();
+			AvailablePortNamesList = new List<string>();
 			FillAvailablePortNamesList();
 			realDeviceList = new SortedList<int, string>();
 		}
@@ -28,20 +42,29 @@ namespace ClientStellaDesktopManager
 			return MyComPortsDictionary[portname].ReadTimeout;
 		}
 
-		// Закрытый метод класса, заполняющий список актуальными ком-портами в системе
+		// Закрытый метод класса, заполняющий AvailablePortNamesList актуальными ком-портами в системе
 		private void FillAvailablePortNamesList()
 		{
+			Close(Properties.Settings.Default.PortName);
 			string[] allComPortListOnThisComputer = SerialPort.GetPortNames(); // Get an array of com_ports on this comp
-			PortNamesList.Clear();
+			AvailablePortNamesList.Clear();
 			for (int i = 0; i < allComPortListOnThisComputer.Length; i++)
 			{
 				try
 				{
-					port = new SerialPort(allComPortListOnThisComputer[i], 9600); //Открываем порт с указанным именем и скоростью 9600 по умолчанию
+					//Создается NET-овский объект SerialPort для управление портом
+					//с указанным именем и скоростью 9600, передаваемыми в конструкторе
+					port = new SerialPort(allComPortListOnThisComputer[i], 9600); 
+
+					//Проверяем го на доступность "железным" путем "открытия-закрытия"
 					port.Open();
 					port.Close();
-					PortNamesList.Add(allComPortListOnThisComputer[i]); // Если порт доступен(не открыт никем), добавляем его в лист
-					MyComPortsDictionary.Add(allComPortListOnThisComputer[i], port); // Here. Available port is stored in the dictionary
+
+					// Если порт доступен(не занят никем), добавляем его в лист
+					AvailablePortNamesList.Add(allComPortListOnThisComputer[i]);
+
+					// Here. Available port is stored in the dictionary
+					MyComPortsDictionary.Add(allComPortListOnThisComputer[i], port); 
 				}
 				catch (Exception)
 				{
@@ -49,19 +72,22 @@ namespace ClientStellaDesktopManager
 				}
 			}
 			port = null;
-			PortNamesList.Sort();
+			AvailablePortNamesList.Sort();
+			//Open(Properties.Settings.Default.PortName, Properties.Settings.Default.BaudRates);
 		}
 
+		//Метод всего лишь преобразует полученный AvailablePortNamesList в массив
 		public string[] GetAvailablePortNamesList
 		{
 			get
 			{
 				FillAvailablePortNamesList();
-				return PortNamesList.ToArray();
+				return AvailablePortNamesList.ToArray();
 			}
 		}
 
-		public bool IsPortOpened(string portName) // Метод, говорящий закрыт порт или открыт
+		// Метод, говорящий закрыт порт или открыт
+		public bool IsPortOpened(string portName) 
 		{
 			if (MyComPortsDictionary.ContainsKey(portName)) //Если в словаре есть такой порт
 				return MyComPortsDictionary[portName].IsOpen; // Проверяем его состояние на открытость
@@ -186,7 +212,8 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
-		//Опрос всех имеющихся в сети устройств и запись их в сортированный список realDeviceList
+		//Опрос всех имеющихся в сети устройств
+		// и запись их в сортированный список realDeviceList
 		public void GetRealDeviceList(ProgressBar bar)
 		{
 			realDeviceList.Clear();
@@ -198,7 +225,6 @@ namespace ClientStellaDesktopManager
 			for (byte i = 0; i <= 19; i++)
 			{
 				progressInfo.Value = i+1;
-				Application.DoEvents();
 
 				pollingDevicesPackage[0] = (byte)(i+1);
 
@@ -232,7 +258,6 @@ namespace ClientStellaDesktopManager
 				{
 					realDeviceList.Add(i+1, "часы");
 				}
-
 				Array.Clear(datain, 0, 15);
 			}
 		}

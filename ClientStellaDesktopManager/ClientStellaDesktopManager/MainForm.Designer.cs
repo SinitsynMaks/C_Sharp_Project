@@ -116,27 +116,28 @@
 			this.panelForPriceDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.panelForPriceDisplay.Location = new System.Drawing.Point(12, 210);
 			this.panelForPriceDisplay.Name = "panelForPriceDisplay";
-			this.panelForPriceDisplay.Size = new System.Drawing.Size(310, 371);
+			this.panelForPriceDisplay.Size = new System.Drawing.Size(310, 362);
 			this.panelForPriceDisplay.TabIndex = 3;
 			// 
 			// buttonRead
 			// 
-			this.buttonRead.Location = new System.Drawing.Point(12, 587);
+			this.buttonRead.Location = new System.Drawing.Point(12, 580);
 			this.buttonRead.Name = "buttonRead";
-			this.buttonRead.Size = new System.Drawing.Size(138, 33);
+			this.buttonRead.Size = new System.Drawing.Size(154, 42);
 			this.buttonRead.TabIndex = 4;
-			this.buttonRead.Text = "Считать";
+			this.buttonRead.Text = "Считать цены с устройств";
 			this.buttonRead.UseVisualStyleBackColor = true;
 			this.buttonRead.Click += new System.EventHandler(this.buttonRead_Click);
 			// 
 			// buttonWrite
 			// 
-			this.buttonWrite.Location = new System.Drawing.Point(184, 587);
+			this.buttonWrite.Location = new System.Drawing.Point(172, 580);
 			this.buttonWrite.Name = "buttonWrite";
-			this.buttonWrite.Size = new System.Drawing.Size(138, 33);
+			this.buttonWrite.Size = new System.Drawing.Size(150, 42);
 			this.buttonWrite.TabIndex = 4;
 			this.buttonWrite.Text = "Записать";
 			this.buttonWrite.UseVisualStyleBackColor = true;
+			this.buttonWrite.Click += new System.EventHandler(this.buttonWrite_Click);
 			// 
 			// Mainmenu
 			// 
@@ -204,7 +205,7 @@
 			// 
 			this.AboutProgramm.Image = ((System.Drawing.Image)(resources.GetObject("AboutProgramm.Image")));
 			this.AboutProgramm.Name = "AboutProgramm";
-			this.AboutProgramm.Size = new System.Drawing.Size(152, 22);
+			this.AboutProgramm.Size = new System.Drawing.Size(149, 22);
 			this.AboutProgramm.Text = "О программе";
 			this.AboutProgramm.Click += new System.EventHandler(this.AboutProgramm_Click);
 			// 
