@@ -248,7 +248,6 @@
 			this.buttonApplyChanges.TabIndex = 2;
 			this.buttonApplyChanges.Text = "Применить изменения";
 			this.buttonApplyChanges.UseVisualStyleBackColor = true;
-			this.buttonApplyChanges.Click += new System.EventHandler(this.buttonApplyChanges_Click);
 			// 
 			// GlobalServisesFormProgress
 			// 

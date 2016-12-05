@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="CommonDataStore.cs" />
     <Compile Include="ComPort.cs" />
+    <Compile Include="ConfigurationSettings.cs" />
     <Compile Include="FClockSettings.cs">
       <SubType>Form</SubType>
     </Compile>

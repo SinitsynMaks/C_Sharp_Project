@@ -48,8 +48,10 @@ namespace ClientStellaDesktopManager
 			baudRate = Properties.Settings.Default.BaudRates;
 
 			comboBoxPortName.Items.Clear();
+
 			// Загружаем список доступных портов в бокс через свойство класса ComPort
 			comboBoxPortName.Items.AddRange(comport.GetAvailablePortNamesList);
+
 			// Отображаем порт из настроект
 			comboBoxPortName.SelectedIndex = comboBoxPortName.Items.IndexOf(portName);
 
@@ -60,7 +62,7 @@ namespace ClientStellaDesktopManager
 			DigitCapacity = Properties.Settings.Default.DigitCapacity.ToString();
 			comboBoxDigitValue.SelectedIndex = comboBoxDigitValue.Items.IndexOf(DigitCapacity);
 
-			buttonApplyChanges.Enabled = false;
+			buttonApplyChanges.Enabled = true;
 			comport.Open(Properties.Settings.Default.PortName, Properties.Settings.Default.BaudRates);
 		}
 
@@ -186,17 +188,12 @@ namespace ClientStellaDesktopManager
 			}
 		}
 
-		private void buttonApplyChanges_Click(object sender, EventArgs e)
-		{
-			
-		}
-
 		private void comboBoxDigitValue_SelectedValueChanged(object sender, EventArgs e)
 		{
 			if (!(DigitCapacity == comboBoxDigitValue.SelectedItem.ToString()))
 			{
 				DigitCapacity = comboBoxDigitValue.SelectedItem.ToString();
-				//buttonSaveSettings.Enabled = true;
+				buttonApplyChanges.Enabled = true;
 			}
 		}
 
